@@ -44,7 +44,8 @@ document.addEventListener("pjax:success", initScrollReveal);
 </ul>
 <p>嗯。。。第二篇看起来似乎开箱即用。。。</p>
 <p>进去看看！</p>
-<h1 id="mirai"><a href="#mirai" class="headerlink" title="mirai"></a>mirai</h1><blockquote>
+<h1 id="mirai"><a href="#mirai" class="headerlink" title="mirai"></a>mirai</h1><p>&gt;</p>
+<blockquote>
 <p><a target="_blank" rel="noopener" href="https://github.com/mamoe/mirai">mirai</a> 是一个在全平台下运行，提供 QQ Android 协议支持的高效率机器人库</p>
 <p>这个项目的名字来源于</p>
 <p>京都动画作品《境界的彼方》的栗山未来(Kuriyama mirai)</p>
@@ -73,10 +74,9 @@ $ cargo build --features native-tls --release
 $ cd target/release
 $ strip mcl-installer # strip 可减小可执行文件大小
 $ upx --best --lzma mcl-installer # 使用 upx 压缩可进一步缩小可执行文件大小
-</code></pre>
-<p>其实在进行到</p>
+</code></pre><p>其实在进行到</p>
 <blockquote>
-<p>cargo build –features native-tls –release</p>
+<p>cargo build —features native-tls —release</p>
 </blockquote>
 <p>这一步就可以了。此时在文件夹下产生了一个mcl可执行文件，使用<code>./mcl</code>命令运行：</p>
 <p><img src="https://s2.loli.net/2022/01/26/fXGZjc1YVS7n4AD.png" alt="3.png" loading="lazy"></p>
@@ -103,10 +103,8 @@ $ upx --best --lzma mcl-installer # 使用 upx 压缩可进一步缩小可执行
 
 cd your-el-bot
 #这里的your-el-bot就是用来放置项目的文件夹
-</code></pre>
-<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><pre><code>npm install
-</code></pre>
-<h2 id="启动mirai"><a href="#启动mirai" class="headerlink" title="启动mirai"></a>启动mirai</h2><p>把前面的mcl启动器文件夹复制到your-el-bot文件夹下，并启动mirai。</p>
+</code></pre><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><pre><code>npm install
+</code></pre><h2 id="启动mirai"><a href="#启动mirai" class="headerlink" title="启动mirai"></a>启动mirai</h2><p>把前面的mcl启动器文件夹复制到your-el-bot文件夹下，并启动mirai。</p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="配置mirai-api-http"><a href="#配置mirai-api-http" class="headerlink" title="配置mirai-api-http"></a>配置mirai-api-http</h3><p>下载<a target="_blank" rel="noopener" href="https://github.com/project-mirai/mirai-api-http/releases">mirai-api-http Releases</a>jar包，放置在<code>your-el-bot/mcl/plugins</code>文件夹中</p>
 <p>配置文件：<code>mcl/config/net.mamoe.mirai-api-http/setting.yml</code></p>
 <pre><code>cors:
@@ -116,14 +114,12 @@ port: 4859
 authKey: el-psy-congroo
 enableWebsocket: true
 #云游建议修改authKey，虽然我并不明白他的意思
-</code></pre>
-<h3 id="配置bot"><a href="#配置bot" class="headerlink" title="配置bot"></a>配置bot</h3><pre><code>// el/index.js
+</code></pre><h3 id="配置bot"><a href="#配置bot" class="headerlink" title="配置bot"></a>配置bot</h3><pre><code>// el/index.js
 module.exports = &#123;
 // 你登录的 QQ 号
 qq: 12345679,
 &#125;;
-</code></pre>
-<blockquote>
+</code></pre><blockquote>
 <p>此外，在<code>package.json</code>中，<code>mcl.folder</code>字段默认值为<code>mcl</code>，即我的mirai启动器文件夹，这也是我在<code>el-bot</code>小节中提到的重新安装启动mcl的原因。</p>
 </blockquote>
 <h3 id="启动bot"><a href="#启动bot" class="headerlink" title="启动bot"></a>启动bot</h3><p>一直在报错如下：</p>

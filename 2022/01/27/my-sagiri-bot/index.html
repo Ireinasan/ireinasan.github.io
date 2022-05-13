@@ -58,15 +58,13 @@ ws:
     host: localhost
     port: 8080 # 端口同上
     reservedSyncId: -1 # 确保为 -1, 否则 WebsocketAdapt
-</code></pre>
-<p>启动mcl。</p>
+</code></pre><p>启动mcl。</p>
 <h2 id="启动bot"><a href="#启动bot" class="headerlink" title="启动bot"></a>启动bot</h2><p>在主目录中</p>
 <pre><code>git clone https://github.com/SAGIRI-kawaii/sagiri-bot.git sagiri-bot
 
 cd sagiri-bot
-</code></pre>
-<p>配置python环境<code>pip install -i https://pypi.doubanio.com/simple/ -r .\requirements.txt</code></p>
-<p>PS. 原指令为<code>pip install -r requirements.txt</code>，而上面的指令是我在<a target="_blank" rel="noopener" href="https://jq.qq.com/?_wv=1027&k=b9w1cThz">QQ群</a>中问问题时一位群友告诉我的，这里感谢群友。</p>
+</code></pre><p>配置python环境<code>pip install -i https://pypi.doubanio.com/simple/ -r .\requirements.txt</code></p>
+<p>PS. 原指令为<code>pip install -r requirements.txt</code>，而上面的指令是我在<a target="_blank" rel="noopener" href="https://jq.qq.com/?_wv=1027&amp;k=b9w1cThz">QQ群</a>中问问题时一位群友告诉我的，这里感谢群友。</p>
 <p>PSS. 我在这一步遇到了不大不小的麻烦。我之前试图跑过<code>python-mirai</code>项目，安装了<code>graia-application-mirai</code>包（虽然最后并没有跑起来），所以在这一步，这个包让我配置的环境出了问题。后来我删除了<code>graia-application-mirai</code>包，解决问题。</p>
 <p>在sagiri-bot文件夹下找到<code>configdemo.yaml</code>并修改如下：</p>
 <pre><code># 必要数据及设置
@@ -118,8 +116,7 @@ database_related:
 mysql:
     pool_size: 40
     max_overflow: 60
-</code></pre>
-<p>将<code>configdemo.yaml</code>文件更名为<code>config.yaml</code>。</p>
+</code></pre><p>将<code>configdemo.yaml</code>文件更名为<code>config.yaml</code>。</p>
 <p>注：需自行安装数据库。<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/424a8b143bbb">SQLite快速入门教程</a></p>
 <p>在sagiri-bot目录下运行一次bot：<code>python main.py</code>。bot应会自动退出。</p>
 <p>寻找<code>alembic.ini</code>文件，打开，将<code>sqlalchemy.url</code>项更换为<code>configdemo.yaml</code>中的<code>db_link</code>项。以我为例：</p>
@@ -153,12 +150,10 @@ mysql:
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39278265/article/details/118641412">阿里云服务器Ubuntu 18.04安装图形界面（ubuntu-desktop）（以及解决困扰我多天的vnc viewer界面灰屏的问题！震惊我自己）</a></p>
 <blockquote>
 <p>省流：<br>        这个过程有点繁琐，省不了流</p>
-</blockquote>
 <hr>
-<blockquote>
 <p>关于VNC viewer无法粘贴的问题：<br>命令行上没有好的解决方法；文件方面可以用WinScp配合VNC viewer，在远程服务器上和本地“共享”某个文件，来回粘贴代码。</p>
-</blockquote>
 <hr>
+</blockquote>
 <h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>部署过程在文档中写得很详细：<a target="_blank" rel="noopener" href="https://sagiri-kawaii.github.io/sagiri-bot/deployment/linux/">sagiri-bot在Linux环境中的部署</a></p>
 <p>按照文档一步一步做就可以了！</p>
 <p>部署成功截图：</p>

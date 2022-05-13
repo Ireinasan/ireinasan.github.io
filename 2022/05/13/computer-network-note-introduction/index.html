@@ -44,7 +44,6 @@ document.addEventListener("pjax:success", initScrollReveal);
 <p>在分组能向下一段链路传输前，整个分组必须到达路由器：存储转发</p>
 <p>举例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">source[源] --R--&gt; route((路由)) --R--&gt; route2((路由)) --R--&gt; destination[目的地]</span><br><span class="line"></span><br><span class="line">data(数据包L)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>时延：$\frac{3L}{R}$</p>
 <ul>
 <li><p>数据报网络：</p>
@@ -85,8 +84,6 @@ document.addEventListener("pjax:success", initScrollReveal);
 <p>$\frac{La}{R}$ ~ 0：平均排队时延小</p>
 <p>$\frac{La}{R}$ &lt; 1：有平均排队时延</p>
 <p>$\frac{La}{R}$ &gt; 1：数据到达速率超过链路处理能力，平均排队时延无穷大</p>
-</blockquote>
-<blockquote>
 <p><em>分组丢失</em><br>结点的缓存<em>buffer</em>有限，当分组到达满的队列时，分组被丢弃(又称为lost)<br>丢失的分组可能由前面的节点或由源端系统重传，也可能不重传</p>
 </blockquote>
 <p>发送时延：也叫传输时延，将数据包从结点推出到链路中所用的时间。发送时延=$\frac{数据长度(b)}{信道带宽(bps)}$</p>
