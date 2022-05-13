@@ -2,6 +2,6 @@
 
 如果有兴趣访问，可以从以下入口：
 
-[sagirichan.com](https://sagirichan.com/)或者
+[sagirichan.com](http://sagirichan.com/)或者
 
 [ireinasan.github.io](http://ireinasan.github.io/)
