@@ -27,7 +27,7 @@ document.addEventListener("pjax:success", initScrollReveal);
 <meta property="article:tag" content="nginx">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2022/04/29/gmZ6RErIefAU9Wo.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="绮罗传香"><img width="96" loading="lazy" src="https://avatars.githubusercontent.com/u/87757744?v=4" alt="绮罗传香"><span class="site-author-status" title="永远相信美好的事情即将发生">:-)</span></a><div class="site-author-name"><a href="/about/">绮罗传香</a></div><span class="site-name">绮罗传香度良辰</span><sub class="site-subtitle">枕惯蹄声梦不惊</sub><div class="site-desciption">lovely sagiri</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">12</span></a></div><div class="site-state-item"><a href="/categories/" title="Categories"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">0</span></a></div><div class="site-state-item"><a href="/tags/" title="Tags"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">3</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/Ireinasan" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=608906376" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/428379308" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%B2%E4%B8%80%E8%AE%B2%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">讲一讲整体思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%A6%81%E5%81%9A%E5%93%AA%E4%BA%9B%E5%87%86%E5%A4%87%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">本地要做哪些准备？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E7%AB%AF%E8%A6%81%E5%81%9A%E4%BA%9B%E4%BB%80%E4%B9%88"><span class="toc-number">1.2.</span> <span class="toc-text">云端要做些什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E5%90%97"><span class="toc-number">1.3.</span> <span class="toc-text">还有别的吗</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%B9%B2%E6%B4%BB"><span class="toc-number">2.</span> <span class="toc-text">开始干活</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0"><span class="toc-number">2.1.</span> <span class="toc-text">本地</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx"><span class="toc-number">2.2.1.</span> <span class="toc-text">nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git"><span class="toc-number">2.2.2.</span> <span class="toc-text">git</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E4%B8%8E%E4%BA%91%E7%AB%AF%E5%BB%BA%E7%AB%8BSSH%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.</span> <span class="toc-text">本地与云端建立SSH连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9hexo%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">修改hexo配置文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%87%E4%BA%8B%E4%BF%B1%E5%A4%87"><span class="toc-number">3.</span> <span class="toc-text">万事俱备</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://sagirichan.com/2022/04/30/blog-on-cloud/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="绮罗传香"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="绮罗传香度良辰"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">如何把博客部署在云服务器上？</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2022-04-30 13:20:46" itemprop="dateCreated datePublished" datetime="2022-04-30T13:20:46+08:00">2022-04-30</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="Modified: 2022-05-13 21:59:25" itemprop="dateModified" datetime="2022-05-13T21:59:25+08:00">2022-05-13</time></div><div class="post-classify"><span class="post-tag"><a class="tag-item" href="/tags/hexo/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">hexo</span></a><a class="tag-item" href="/tags/nginx/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">nginx</span></a><a class="tag-item" href="/tags/git/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">git</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><blockquote>
+<meta name="twitter:image" content="https://s2.loli.net/2022/04/29/gmZ6RErIefAU9Wo.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="绮罗传香"><img width="96" loading="lazy" src="https://avatars.githubusercontent.com/u/87757744?v=4" alt="绮罗传香"><span class="site-author-status" title="一切都会好起来的">:-)</span></a><div class="site-author-name"><a href="/about/">绮罗传香</a></div><a class="site-name" href="/about/site.html">绮罗传香度良辰</a><sub class="site-subtitle">枕惯蹄声梦不惊</sub><div class="site-desciption">lovely sagiri</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="Archives"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">12</span></a></div><div class="site-state-item"><a href="/categories/" title="Categories"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">0</span></a></div><div class="site-state-item"><a href="/tags/" title="Tags"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">3</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/Ireinasan" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=608906376" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/428379308" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%B2%E4%B8%80%E8%AE%B2%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">讲一讲整体思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%A6%81%E5%81%9A%E5%93%AA%E4%BA%9B%E5%87%86%E5%A4%87%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">本地要做哪些准备？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E7%AB%AF%E8%A6%81%E5%81%9A%E4%BA%9B%E4%BB%80%E4%B9%88"><span class="toc-number">1.2.</span> <span class="toc-text">云端要做些什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E5%90%97"><span class="toc-number">1.3.</span> <span class="toc-text">还有别的吗</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%B9%B2%E6%B4%BB"><span class="toc-number">2.</span> <span class="toc-text">开始干活</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0"><span class="toc-number">2.1.</span> <span class="toc-text">本地</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx"><span class="toc-number">2.2.1.</span> <span class="toc-text">nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git"><span class="toc-number">2.2.2.</span> <span class="toc-text">git</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E4%B8%8E%E4%BA%91%E7%AB%AF%E5%BB%BA%E7%AB%8BSSH%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.</span> <span class="toc-text">本地与云端建立SSH连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9hexo%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">修改hexo配置文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%87%E4%BA%8B%E4%BF%B1%E5%A4%87"><span class="toc-number">3.</span> <span class="toc-text">万事俱备</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://sagirichan.com/2022/04/30/blog-on-cloud/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="绮罗传香"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="绮罗传香度良辰"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">如何把博客部署在云服务器上？</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="Created: 2022-04-30 13:20:46" itemprop="dateCreated datePublished" datetime="2022-04-30T13:20:46+08:00">2022-04-30</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="Modified: 2022-05-13 21:59:25" itemprop="dateModified" datetime="2022-05-13T21:59:25+08:00">2022-05-13</time></div><div class="post-classify"><span class="post-tag"><a class="tag-item" href="/tags/hexo/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">hexo</span></a><a class="tag-item" href="/tags/nginx/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">nginx</span></a><a class="tag-item" href="/tags/git/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">git</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><blockquote>
 <p>前言<br>在我的另一篇文章<a href="http://sagirichan.com/2022/01/25/my-own-website/">关于我想要拥有自己的网站这件事</a>中，我搭建了一个基于<a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>的博客网站，并且备案成功，为网站迁移做好了前期准备。</p>
 <p>本来这篇文章我是与上面那篇合在一起写的，然而，由于网上教程的不完善<del>以及我的猪鼻</del>，我搞了好久才成功把网站部署到了服务器上，期间踩了无数稀奇古怪的坑，跟随着部署过程一起写的这篇文章也随之变得冗长臃肿，于是我认为这么屑的部署过程有必要单开一帖记录。</p>
 </blockquote>
@@ -66,7 +66,8 @@ document.addEventListener("pjax:success", initScrollReveal);
 <pre><code>mkdir -p /var/www/hexo 
 #教程里都写这个目录，虽然不知道是否有什么深意，但还是跟着做了
 #-p 确保目录名称存在，不存在的就建一个。
-</code></pre><p>修改目录所有者</p>
+</code></pre>
+<p>修改目录所有者</p>
 <pre><code>chown -R \$USER:$USER /var/www/hexo 
 #这里的\$USER填[用户名](https://zhuanlan.zhihu.com/p/105482468)
 #这里我使用的是腾讯云服务器ubuntu实例的默认用户名`ubuntu`
@@ -74,19 +75,21 @@ document.addEventListener("pjax:success", initScrollReveal);
 #当然也有教程是建立了一个git用户，这样更规范，也推荐使用
 #`-R`参数表示递归处理，将指定目录下的所有文件及子目录一并处理
 #`USER:USER`中，前一个USER是指用户名，后一个USER是指用户所属的群组
-</code></pre><p>修改目录权限</p>
+</code></pre>
+<p>修改目录权限</p>
 <pre><code>chmod -R 755 /var/www/hexo
 #chmod 755 设置用户的权限为：
 #1.文件所有者可读可写可执行
 #2.与文件所有者同属一个用户组的其他用户可读可执行
 #3.其它用户组可读可执行
-</code></pre><p>修改Nginx的<code>default</code>文件使得<code>root</code>指向刚刚创建的<code>/var/www/hexo</code>目录：</p>
+</code></pre>
+<p>修改Nginx的<code>default</code>文件使得<code>root</code>指向刚刚创建的<code>/var/www/hexo</code>目录：</p>
 <blockquote>
-<p>vim /etc/nginx/sites-available/default</p>
+<p>vim &#x2F;etc&#x2F;nginx&#x2F;sites-available&#x2F;default</p>
 </blockquote>
 <p>在server大括号中，添加如图所示的一句话：</p>
 <blockquote>
-<p>root /var/www/hexo;</p>
+<p>root &#x2F;var&#x2F;www&#x2F;hexo;</p>
 </blockquote>
 <p><img src="https://s2.loli.net/2022/04/30/Rw7zbuLlJ3IOK8Z.png" alt="修改nginx的default文件.png" loading="lazy"></p>
 <p>重启nginx服务。</p>
@@ -95,33 +98,37 @@ document.addEventListener("pjax:success", initScrollReveal);
 </blockquote>
 <h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>建立一个git仓库目录</p>
 <blockquote>
-<p>mkdir /var/repo/ </p>
+<p>mkdir &#x2F;var&#x2F;repo&#x2F; </p>
 </blockquote>
 <p>修改目录权限</p>
 <pre><code>chown -R \$USER:$USER /var/repo/
 #这里目录所有者与上文nginx静态文件目录所有者相同，我是`ubuntu`.
 chmod -R 755 /var/repo/
-</code></pre><p>将这个仓库初始化</p>
+</code></pre>
+<p>将这个仓库初始化</p>
 <pre><code>cd /var/repo
 git init --bare hexoblog.git
-</code></pre><blockquote>
-<p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_34349564/article/details/52487860">git init 与git init —bare</a></p>
+</code></pre>
+<blockquote>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_34349564/article/details/52487860">git init 与git init –bare</a></p>
 </blockquote>
 <p>配置hook（钩子）文件</p>
 <pre><code>&gt; vim /var/repo/myblog.git/hooks/post-receive
 &gt; #git post-receive机制：这个hook是git服务器在受到push请求时，并且接受完代码提交时触发 
-</code></pre><blockquote>
-<p>参考：<a target="_blank" rel="noopener" href="https://www.imqianduan.com/git-svn/335.html">使用git hooks(post-receive)实现简单的远程自动部署</a><br>不会用vim可以看一看简单指令-&gt;<a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-vim.html">Linux vi/vim</a></p>
+</code></pre>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.imqianduan.com/git-svn/335.html">使用git hooks(post-receive)实现简单的远程自动部署</a><br>不会用vim可以看一看简单指令-&gt;<a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-vim.html">Linux vi&#x2F;vim</a></p>
 </blockquote>
 <p>打开文件后在其中输入：</p>
 <pre><code>#!/bin/bash
 git --work-tree=/var/www/hexo --git-dir=/var/repo/hexoblog.git checkout -f
-</code></pre><blockquote>
-<p>参考文章：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Jerryshome/archive/2011/12/15/2289218.html">Git系列之二 —- git-dir &amp; work-tree</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44567318/article/details/110099081">git checkout 检出命令——自由切换分支&amp;恢复文件</a></p>
+</code></pre>
+<blockquote>
+<p>参考文章：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Jerryshome/archive/2011/12/15/2289218.html">Git系列之二 — git-dir &amp; work-tree</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44567318/article/details/110099081">git checkout 检出命令——自由切换分支&amp;恢复文件</a></p>
 </blockquote>
 <p>保存后修改权限</p>
 <blockquote>
-<p>chmod +x /var/repo/myblog.git/hooks/post-receive<br>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/yzh_1346983557/article/details/92571987">chmod +x，赋予“可执行”权限</a></p>
+<p>chmod +x &#x2F;var&#x2F;repo&#x2F;myblog.git&#x2F;hooks&#x2F;post-receive<br>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/yzh_1346983557/article/details/92571987">chmod +x，赋予“可执行”权限</a></p>
 </blockquote>
 <h2 id="本地与云端建立SSH连接"><a href="#本地与云端建立SSH连接" class="headerlink" title="本地与云端建立SSH连接"></a>本地与云端建立SSH连接</h2><ul>
 <li><p>如果你注册过github，那你大概率曾经生成过公钥，查看（Windows）电脑是否有<code>C/Users/Administrator/.ssh/</code>文件夹，如果有的话，文件夹下<code>id_rsa.pub</code>就是你的公钥。</p>
@@ -133,7 +140,7 @@ git --work-tree=/var/www/hexo --git-dir=/var/repo/hexoblog.git checkout -f
 <p>  向云服务器传送公钥。</p>
 <p>  举个例子，假设我的云服务IP是<code>10.10.10.10</code>，我要向服务器上<code>sagiri</code>用户传送公钥，那么我就使用</p>
 <blockquote>
-<p>ssh-copy-id sagiri@10.10.10.10</p>
+<p>ssh-copy-id <a href="mailto:&#x73;&#x61;&#103;&#105;&#114;&#x69;&#x40;&#49;&#48;&#46;&#49;&#48;&#46;&#49;&#x30;&#46;&#49;&#48;">&#x73;&#x61;&#103;&#105;&#114;&#x69;&#x40;&#49;&#48;&#46;&#49;&#48;&#46;&#49;&#x30;&#46;&#49;&#48;</a></p>
 </blockquote>
 <p>  指令。</p>
 <p>  由于我们之前配置仓库时，<code>git仓库</code>的所有者和<code>nginx静态文件目录</code>的所有者我都填了<code>ubuntu</code>，所以这里的用户名当然也是<code>ubuntu</code>.</p>
@@ -154,7 +161,7 @@ git --work-tree=/var/www/hexo --git-dir=/var/repo/hexoblog.git checkout -f
 <ul>
 <li><p>找到<code>url</code>字段，将其配置为</p>
 <blockquote>
-<p>url: <a href="http://[服务器IP|服务器网址]/">http://[服务器IP|服务器网址]/</a></p>
+<p>url: http:&#x2F;&#x2F;[服务器IP|服务器网址]&#x2F;</p>
 </blockquote>
 <p>  举例：我的服务器公网IP为<code>101.33.208.50</code>，挂载在我的服务器上的域名为<code>sagirichan.com</code>，那么这里可以填</p>
 <blockquote>
@@ -183,9 +190,9 @@ git --work-tree=/var/www/hexo --git-dir=/var/repo/hexoblog.git checkout -f
 <li><p><code>仓库用户名</code>字段，由于部署时我设置的云端<code>git仓库</code>的所有者为<code>ubuntu</code>，所以这里也是<code>ubuntu</code>.</p>
 </li>
 <li><p><code>仓库位置</code>字段，即是之前部署时设置的仓库位置。</p>
-<p>github仓库格式同理<del>而且搭建网站的教程百分之九十九都会讲这个的</del></p>
 </li>
 </ul>
+<p>  github仓库格式同理<del>而且搭建网站的教程百分之九十九都会讲这个的</del></p>
 </li>
 <li><p>对于deploy字段，除了展示的关键词，还有<code>branch</code>、<code>message</code>等关键词可供选择<del>但是我嫌麻烦就没有继续深入研究了</del>。</p>
 <p>  <img src="https://s2.loli.net/2022/05/01/URreFvp7zLquGbX.png" alt="deploy补充.png" loading="lazy"></p>
@@ -196,6 +203,8 @@ git --work-tree=/var/www/hexo --git-dir=/var/repo/hexoblog.git checkout -f
 <h1 id="万事俱备"><a href="#万事俱备" class="headerlink" title="万事俱备"></a>万事俱备</h1><p>在hexo文件夹下打开终端（vscode、power shell、git bash等等任意终端），输入<code>hexo三连</code>：</p>
 <blockquote>
 <p>hexo clean<br>hexo g<br>hexo d</p>
+</blockquote>
+<blockquote>
 <p>g是generation，生成网页文件<br>d是deploy，发布网站。实际上deploy命令是将网页文件推送到远程仓库中。参考<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/one-command-deployment#%E8%BF%99%E4%B8%80%E5%88%87%E6%98%AF%E5%A6%82%E4%BD%95%E5%8F%91%E7%94%9F%E7%9A%84%EF%BC%9F">这一切是如何发生的？</a>。</p>
 </blockquote>
 <p>或者也可以简化为两连：</p>
