@@ -5,7 +5,7 @@
 }
 document.addEventListener("DOMContentLoaded", initScrollReveal);
 document.addEventListener("pjax:success", initScrollReveal);
-</script><link rel="icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+</script><link rel="icon" type="image/png" href="/%E5%93%87%E5%93%A6.ico"><link rel="mask-icon" href="/%E5%93%87%E5%93%A6.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
     const Yun = window.Yun || {};
     window.CONFIG = {"hostname":"sagirichan.com","root":"/","title":"绮罗传香度良辰","version":"1.7.0","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
   </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><meta name="description" content="前言在我的另一篇文章关于我想要拥有自己的网站这件事中，我搭建了一个基于GitHub Pages的博客网站，并且备案成功，为网站迁移做好了前期准备。 本来这篇文章我是与上面那篇合在一起写的，然而，由于网上教程的不完善以及我的猪鼻，我搞了好久才成功把网站部署到了服务器上，期间踩了无数稀奇古怪的坑，跟随着部署过程一起写的这篇文章也随之变得冗长臃肿，于是我认为这么屑的部署过程有必要单开一帖记录。  参考">
@@ -236,7 +236,7 @@ git --work-tree=/var/www/hexo --git-dir=/var/repo/hexoblog.git checkout -f
 <p>  向云服务器传送公钥。</p>
 <p>  举个例子，假设我的云服务IP是<code>10.10.10.10</code>，我要向服务器上<code>sagiri</code>用户传送公钥，那么我就使用</p>
 <blockquote>
-<p>ssh-copy-id <a href="mailto:&#x73;&#97;&#x67;&#x69;&#114;&#x69;&#64;&#x31;&#48;&#46;&#49;&#x30;&#x2e;&#x31;&#x30;&#46;&#x31;&#48;">sagiri@10.10.10.10</a></p>
+<p>ssh-copy-id <a href="mailto:&#115;&#97;&#x67;&#x69;&#114;&#x69;&#x40;&#x31;&#x30;&#46;&#x31;&#x30;&#x2e;&#x31;&#48;&#x2e;&#49;&#48;">sagiri@10.10.10.10</a></p>
 </blockquote>
 <p>  指令。</p>
 <p>  由于我们之前配置仓库时，<code>git仓库</code>的所有者和<code>nginx静态文件目录</code>的所有者我都填了<code>ubuntu</code>，所以这里的用户名当然也是<code>ubuntu</code>.</p>
