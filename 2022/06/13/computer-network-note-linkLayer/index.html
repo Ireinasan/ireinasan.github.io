@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <meta property="og:image" content="https://s2.loli.net/2022/06/13/aUJRXQN4c7t5efM.gif">
 <meta property="og:image" content="https://s2.loli.net/2022/06/13/8XnezjQuigMvDwF.png">
 <meta property="article:published_time" content="2022-06-12T18:49:43.000Z">
-<meta property="article:modified_time" content="2022-06-12T18:50:19.530Z">
+<meta property="article:modified_time" content="2022-06-12T19:02:36.097Z">
 <meta property="article:author" content="绮罗传香">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="笔记">
@@ -240,8 +240,7 @@ getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
 </li>
 </ul>
 <h3 id="时隙ALOHA"><a href="#时隙ALOHA" class="headerlink" title="时隙ALOHA"></a>时隙ALOHA</h3><ol>
-<li>假定</li>
-</ol>
+<li><p>假定</p>
 <ul>
 <li><p>所有帧有相同长度</p>
 </li>
@@ -252,9 +251,8 @@ getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
 <li><p>节点是同步的</p>
 </li>
 </ul>
-<ol start="2">
-<li>操作</li>
-</ol>
+</li>
+<li><p>操作</p>
 <ul>
 <li><p>当节点获得新帧，将在下一个时隙中传输</p>
 </li>
@@ -263,15 +261,14 @@ getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
 <li><p>如果碰撞，节点在每个后续时隙中以概率p重传帧</p>
 </li>
 </ul>
-<p><img src="https://s2.loli.net/2022/06/13/iv1dsj8r4PcWzTV.png" alt="时隙ALOHA.png" loading="lazy"></p>
-<p>如上图所示，c表示碰撞，S表示成功发送帧，E表示空闲时隙</p>
-<p>在第一个C时隙，节点1、2、3同时传输帧，发生碰撞</p>
-<p>在第二个C时隙，节点1、2同时传输帧，发生碰撞</p>
-<p>紧接着下一个时隙，节点2成功发送帧</p>
-<p>以此类推，不再重复描述</p>
-<ol start="3">
-<li>优点</li>
-</ol>
+<p> <img src="https://s2.loli.net/2022/06/13/iv1dsj8r4PcWzTV.png" alt="时隙ALOHA.png" loading="lazy"></p>
+<p> 如上图所示，c表示碰撞，S表示成功发送帧，E表示空闲时隙</p>
+<p> 在第一个C时隙，节点1、2、3同时传输帧，发生碰撞</p>
+<p> 在第二个C时隙，节点1、2同时传输帧，发生碰撞</p>
+<p> 紧接着下一个时隙，节点2成功发送帧</p>
+<p> 以此类推，不再重复描述</p>
+</li>
+<li><p>优点</p>
 <ul>
 <li><p>单个活跃节点能够连续地以信道的全速传输</p>
 </li>
@@ -280,9 +277,8 @@ getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
 <li><p>简单</p>
 </li>
 </ul>
-<ol start="4">
-<li>缺点</li>
-</ol>
+</li>
+<li><p>缺点</p>
 <ul>
 <li><p>碰撞浪费时隙</p>
 </li>
@@ -293,9 +289,8 @@ getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
 <li><p>时钟同步</p>
 </li>
 </ul>
-<ol start="5">
-<li>效率</li>
-</ol>
+</li>
+<li><p>效率</p>
 <ul>
 <li><p>定义：节点发送成功的时隙与总时隙的长度比值</p>
 </li>
@@ -307,7 +302,9 @@ getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
 <p>  当N趋近无穷大，取 $Np(1-p)^{N-1}$ 极限，得到 $\frac{1}{e}&#x3D;0.37$</p>
 </li>
 </ul>
-<p>信道用于有用传输的时间是 37%</p>
+<p> 信道用于有用传输的时间是 37%</p>
+</li>
+</ol>
 <h3 id="非时隙ALOHA"><a href="#非时隙ALOHA" class="headerlink" title="非时隙ALOHA"></a>非时隙ALOHA</h3><ul>
 <li><p>无同步要求</p>
 </li>
