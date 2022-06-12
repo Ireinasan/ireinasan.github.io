@@ -1,0 +1,608 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="绮罗传香"><meta name="copyright" content="绮罗传香"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>计网复习笔记-网络层 | 绮罗传香度良辰</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.2.4/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="//at.alicdn.com/t/font_1140697_dxory92pb0h.js" async></script><script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/mini.global.js"></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/auto-render.min.js"></script><script type="module">import { renderKatex } from '/js/utils.js'
+document.addEventListener("DOMContentLoaded", () => {
+  renderKatex({
+    ...{},
+    ...true?.options,
+  });
+});</script><link rel="icon" type="image/png" href="/%E5%93%87%E5%93%A6.ico"><link rel="mask-icon" href="/%E5%93%87%E5%93%A6.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"sagirichan.com","root":"/","title":"绮罗传香度良辰","version":"1.9.1","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":null},"vendors":{"darken":"https://cdn.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="绮罗传香度良辰" type="application/atom+xml"><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><meta name="description" content="虚电路与数据报网络层提供服务有两大类：  无连接的网络服务（数据报服务）  面向连接的网络服务（虚电路服务）   虚电路 需建立连接  由VC号来标识  连接状态需要维持，路径上的交换节点都参与  涉及资源预留问题   VC号与转发表VC号为局部的而非全网的，简化虚电路的连接建立。 转发表示例：    入接口 入VC号 出接口 出VC号    1 12 2 22   2 63 1 18   3 7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计网复习笔记-网络层">
+<meta property="og:url" content="http://sagirichan.com/2022/06/13/computer-network-note-networkLayer/index.html">
+<meta property="og:site_name" content="绮罗传香度良辰">
+<meta property="og:description" content="虚电路与数据报网络层提供服务有两大类：  无连接的网络服务（数据报服务）  面向连接的网络服务（虚电路服务）   虚电路 需建立连接  由VC号来标识  连接状态需要维持，路径上的交换节点都参与  涉及资源预留问题   VC号与转发表VC号为局部的而非全网的，简化虚电路的连接建立。 转发表示例：    入接口 入VC号 出接口 出VC号    1 12 2 22   2 63 1 18   3 7">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/06/12/jslcdBaDtHyzW6k.gif">
+<meta property="og:image" content="https://s2.loli.net/2022/05/09/x7BGkZOAhSz82TD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/12/otcE3bJYAkvuV9Q.png">
+<meta property="article:published_time" content="2022-06-12T18:48:11.000Z">
+<meta property="article:modified_time" content="2022-06-12T18:49:03.256Z">
+<meta property="article:author" content="绮罗传香">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/12/jslcdBaDtHyzW6k.gif"><script type="module">import { getScript } from '/js/utils.js'
+getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
+  const mermaidOptions = {"startOnload":true}
+  mermaid.initialize(mermaidOptions);
+}, window.mermaid);
+</script><style>.mermaid{background: transparent;}</style><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="绮罗传香"><img width="96" loading="lazy" src="https://s2.loli.net/2022/05/16/FuHGYpD4vVxLU2i.jpg" alt="绮罗传香"><span class="site-author-status" title="一切都会好起来的">:-)</span></a><div class="site-author-name"><a href="/about/">绮罗传香</a></div><span class="site-name">绮罗传香度良辰</span><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="我的主页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">1</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">5</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/Ireinasan" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=608906376" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/428379308" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%8A%A5"><span class="toc-number">1.</span> <span class="toc-text">虚电路与数据报</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF"><span class="toc-number">1.1.</span> <span class="toc-text">虚电路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VC%E5%8F%B7%E4%B8%8E%E8%BD%AC%E5%8F%91%E8%A1%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">VC号与转发表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%9A%84%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">1.1.2.</span> <span class="toc-text">虚电路的三个阶段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">1.2.</span> <span class="toc-text">数据报网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E9%95%BF%E5%89%8D%E7%BC%80%E5%8C%B9%E9%85%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">最长前缀匹配</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP"><span class="toc-number">2.</span> <span class="toc-text">IP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">IP数据报格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP-%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E6%96%B0%E7%BB%84%E8%A3%85"><span class="toc-number">2.2.</span> <span class="toc-text">IP 分片和重新组装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80%E8%A1%A8%E7%A4%BA%E6%96%B9%E5%BC%8F%EF%BC%9A%E7%82%B9%E5%88%86%E5%8D%81%E8%BF%9B%E5%88%B6%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">IP地址表示方式：点分十进制法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">2.4.</span> <span class="toc-text">子网掩码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%B1%BB%E5%9E%8B%E5%9F%9F%E9%97%B4%E9%80%89%E8%B7%AF-Classless-InterDomain-Routing-CIDR"><span class="toc-number">2.5.</span> <span class="toc-text">无类型域间选路 (Classless InterDomain Routing) CIDR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81%E5%BA%94%E7%94%A8"><span class="toc-number">2.6.</span> <span class="toc-text">子网掩码应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80"><span class="toc-number">2.6.1.</span> <span class="toc-text">一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C"><span class="toc-number">2.6.2.</span> <span class="toc-text">二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89"><span class="toc-number">2.6.3.</span> <span class="toc-text">三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B"><span class="toc-number">2.6.4.</span> <span class="toc-text">四</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%81%E6%9C%89%E5%9C%B0%E5%9D%80"><span class="toc-number">2.7.</span> <span class="toc-text">私有地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAT%E6%8A%80%E6%9C%AF"><span class="toc-number">2.8.</span> <span class="toc-text">NAT技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP"><span class="toc-number">2.9.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6"><span class="toc-number">2.10.</span> <span class="toc-text">IPv6</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%89%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">选路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E9%80%89%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">链路状态选路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dijkstra%E7%AE%97%E6%B3%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">Dijkstra算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.2.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E7%AE%97%E6%B3%95"><span class="toc-number">3.1.3.</span> <span class="toc-text">具体算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9A"><span class="toc-number">3.1.3.1.</span> <span class="toc-text">初始化：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%BC%80%E5%A7%8B%EF%BC%9A"><span class="toc-number">3.1.3.2.</span> <span class="toc-text">算法开始：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E6%80%A7%EF%BC%9A"><span class="toc-number">3.1.4.</span> <span class="toc-text">算法复杂性：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E7%9F%A2%E9%87%8F%E7%AE%97%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">距离矢量算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95"><span class="toc-number">3.2.1.</span> <span class="toc-text">动态规划算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5-1"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E3%80%81%E5%BC%82%E6%AD%A5"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">迭代、异步</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%AD%E9%80%89%E8%B7%AF"><span class="toc-number">4.</span> <span class="toc-text">互联网中选路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9C%E8%B7%9D%E7%A6%BB%E2%80%9D%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">4.1.</span> <span class="toc-text">“距离”的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RIP%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A6%81%E7%82%B9"><span class="toc-number">4.2.</span> <span class="toc-text">RIP协议的三个要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="toc-number">4.3.</span> <span class="toc-text">路由表的建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E7%AE%97%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">距离向量算法</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://sagirichan.com/2022/06/13/computer-network-note-networkLayer/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="绮罗传香"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="绮罗传香度良辰"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">计网复习笔记-网络层</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <span class="post-meta-icon-text">发表于</span> <time title="创建时间：2022-06-13 02:48:11" itemprop="dateCreated datePublished" datetime="2022-06-13T02:48:11+08:00">2022-06-13</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">4.5k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">17m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">学习笔记</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">计算机网络</span></a><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:DarkTurquoise"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h1 id="虚电路与数据报"><a href="#虚电路与数据报" class="headerlink" title="虚电路与数据报"></a>虚电路与数据报</h1><p>网络层提供服务有两大类：</p>
+<ul>
+<li><p>无连接的网络服务（数据报服务）</p>
+</li>
+<li><p>面向连接的网络服务（虚电路服务）</p>
+</li>
+</ul>
+<h2 id="虚电路"><a href="#虚电路" class="headerlink" title="虚电路"></a>虚电路</h2><ul>
+<li><p>需建立连接</p>
+</li>
+<li><p>由VC号来标识</p>
+</li>
+<li><p>连接状态需要维持，路径上的交换节点都参与</p>
+</li>
+<li><p>涉及资源预留问题</p>
+</li>
+</ul>
+<h3 id="VC号与转发表"><a href="#VC号与转发表" class="headerlink" title="VC号与转发表"></a>VC号与转发表</h3><p>VC号为局部的而非全网的，简化虚电路的连接建立。</p>
+<p>转发表示例：</p>
+<table>
+<thead>
+<tr>
+<th>入接口</th>
+<th>入VC号</th>
+<th>出接口</th>
+<th>出VC号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>12</td>
+<td>2</td>
+<td>22</td>
+</tr>
+<tr>
+<td>2</td>
+<td>63</td>
+<td>1</td>
+<td>18</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>2</td>
+<td>17</td>
+</tr>
+<tr>
+<td>1</td>
+<td>97</td>
+<td>3</td>
+<td>87</td>
+</tr>
+</tbody></table>
+<h3 id="虚电路的三个阶段"><a href="#虚电路的三个阶段" class="headerlink" title="虚电路的三个阶段"></a>虚电路的三个阶段</h3><ul>
+<li><p>虚电路建立</p>
+</li>
+<li><p>数据传输</p>
+</li>
+<li><p>虚电路拆除</p>
+</li>
+</ul>
+<h2 id="数据报网络"><a href="#数据报网络" class="headerlink" title="数据报网络"></a>数据报网络</h2><ul>
+<li><p>在网络层无呼叫建立</p>
+</li>
+<li><p>路由器：没有端到端连接的状态</p>
+<ul>
+<li>无网络级“连接”的概念</li>
+</ul>
+</li>
+<li><p>分组使用目的主机地址转发</p>
+<ul>
+<li>在相同的<strong>源和目的对</strong>可能采用不同的路径</li>
+</ul>
+</li>
+</ul>
+<h3 id="最长前缀匹配"><a href="#最长前缀匹配" class="headerlink" title="最长前缀匹配"></a>最长前缀匹配</h3><p>当路由器收到一个IP数据包时，它会将数据包的目的IP地址与自己本地路由表中的所有路由表进行逐位（Bit-By-Bit）对比，直到找到匹配度最长的条目，这就是最长前缀匹配机制。</p>
+<p>举例：</p>
+<p>存在以下转发表</p>
+<table>
+<thead>
+<tr>
+<th>前缀匹配</th>
+<th>链路接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>11001000 00010111 00010</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11001000 00010111 00011000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11001000 00010111 00011</td>
+<td>2</td>
+</tr>
+<tr>
+<td>otherwise</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>① 目的地址 11001000 00010111 00011 哪个接口？（0）<br>② 目的地址 11001000 00010111 00011000 10101010 哪个接口？（1）</p>
+<h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><p>不可靠的、尽力而为的、无连接分组交付系统</p>
+<h2 id="IP数据报格式"><a href="#IP数据报格式" class="headerlink" title="IP数据报格式"></a>IP数据报格式</h2><p><img src="https://s2.loli.net/2022/06/12/jslcdBaDtHyzW6k.gif" alt="IP数据报格式.gif" loading="lazy"></p>
+<table border="1" cellspacing="0">
+    <tr>
+        <td colspan="4" align="center"> [4位]版本 </td> 
+        <td colspan="4" align="center"> [4位]首部长度 </td>
+        <td colspan="8" align="center"> [8位]服务类型 </td>
+        <td colspan="16" align="center" width="50%" > [16位]总长度 </td>
+    </tr>
+    <tr>
+        <td colspan="16" align="center"> [16位]标识 </td>
+        <td colspan="3" align="center"> [3位]标志 </td>
+        <td colspan="13" align="center"> [13位]片偏移 </td>
+    </tr>
+    <tr>
+        <td colspan="8" align="center"> [8位]生存时间 </td>
+        <td colspan="8" align="center"> [8位]协议 </td>
+        <td colspan="16" align="center"> [16位]首部检验和 </td>
+    </tr>
+    <tr>
+        <td colspan="32" align="center"> 源地址 </td>
+    </tr>
+    <tr>
+        <td colspan="32" align="center"> 目的地址 </td>
+    </tr>
+    <tr>
+        <td colspan="32" align="center"> ---- 可选字段（长度可变）---- || ---- 填充 ---- </td>
+    </tr>
+    <tr>
+        <td colspan="32" align="center"> 数据部分 </td>
+    </tr>
+</table>
+
+<ul>
+<li><p>版本：4位。表示IP协议版本</p>
+</li>
+<li><p>首部长度：4位。可表示的最大十进制数值为15。单位为【32位字长】（4字节）即：该字段数值为<strong>1</strong>时，表示首部长度为<strong>32位（4字节）</strong>；又由该字段最大值为1111，首部长度最大为60位。</p>
+<p>  当IP首部长度不是32的整数倍时，用结尾的填充部分填充至整数倍。</p>
+</li>
+<li><p>服务类型：8位。只有在使用区分服务时，该字段才起作用</p>
+</li>
+<li><p>总长度：16位。首部+数据的长度之和，单位为字节。故首部+数据总长度最大值为2^16^-1&#x3D;65535字节</p>
+</li>
+<li><p>标识：16位。</p>
+<ul>
+<li><p>IP协议在存储器中维持一个计数器，每产生一个数据包，计数器就+1，并将值赋给标识字段。</p>
+</li>
+<li><p>当数据包的长度超过网络的MTU而必须分片时，这个标识字段的值就被复制到所有分片中</p>
+</li>
+<li><p>拥有相同标识字段值的分片会被重组呈原来的数据报。</p>
+</li>
+</ul>
+</li>
+<li><p>标志：3位。</p>
+<ul>
+<li><p>第一位未使用，值为0</p>
+</li>
+<li><p>第二位称为DF（不分片），表示是否允许分片：</p>
+<ul>
+<li><p>取值为0时，表示允许分片</p>
+</li>
+<li><p>取值为1时，表示不允许分片</p>
+</li>
+</ul>
+</li>
+<li><p>第三位称为MF（更多分片），表示是否还有分片正在传输。设为0时表示没有更多分片需要发送。</p>
+</li>
+</ul>
+</li>
+<li><p>片偏移：13位。当报文被分片后，该字段标记该分片在原报文中的相对位置。片偏移单位为【8字节】。</p>
+</li>
+<li><p>生存时间（TTL）：8位。表示数据包在网络中的寿命，由发出数据包的源主机设置，目的是防止无法交付的数据报无限制地在网络中传输，从而消耗网络资源。</p>
+<p>  路由器在转发数据报之前，先把TTL值-1，若TTL值减少到0，则丢弃这个数据报，不再转发。</p>
+<p>  TLL最大值为255（2^8^-1），若把TTL初始值设为1，则表明这个数据包只能在本局域网中传送。</p>
+</li>
+<li><p>协议：8位。表示数据部分使用的协议（TCP：6；UDP：17；ICMP：1……）</p>
+</li>
+<li><p>首部检验和：16位。校验数据报的首部。</p>
+</li>
+<li><p>源地址：32位。</p>
+</li>
+<li><p>目的地址：32位。</p>
+</li>
+</ul>
+<h2 id="IP-分片和重新组装"><a href="#IP-分片和重新组装" class="headerlink" title="IP 分片和重新组装"></a>IP 分片和重新组装</h2><ul>
+<li><p>网络链路有MTU（最大传输长度）-最大可能都链路级帧</p>
+</li>
+<li><p>在网络中，大IP数据报被分割（分段）</p>
+<ul>
+<li><p>一个数据报变为几个数据报</p>
+</li>
+<li><p>仅在最后目的地“重新装配”</p>
+</li>
+<li><p>IP首部比特用于标识\排序相关段</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>举例：</p>
+<p>MTU &#x3D; 1500字节；下方为一个4000字节的数据报</p>
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>ID</th>
+<th>MF位</th>
+<th>偏移</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4000</td>
+<td>X</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>分片后产生以下三个数据报：</p>
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>ID</th>
+<th>MF位</th>
+<th>偏移</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1500</td>
+<td>X</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>ID</th>
+<th>MF位</th>
+<th>偏移</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1500</td>
+<td>X</td>
+<td>1</td>
+<td>185</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>ID</th>
+<th>MF位</th>
+<th>偏移</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1040</td>
+<td>X</td>
+<td>0</td>
+<td>370</td>
+</tr>
+</tbody></table>
+<p>长度&#x3D;数据段1480+首部20&#x3D;1500（字节）</p>
+<p>偏移&#x3D;$\frac{1480}{8}&#x3D;185$</p>
+<h2 id="IP地址表示方式：点分十进制法"><a href="#IP地址表示方式：点分十进制法" class="headerlink" title="IP地址表示方式：点分十进制法"></a>IP地址表示方式：点分十进制法</h2><p>每<strong>8位</strong>一组，用十进制表示，并利用点号分割各部分，可以表示为从<code>0.0.0.0</code>到<code>255.255.255.255</code></p>
+<p>IP地址结构：</p>
+<p>两级IP：{ &lt;网络号&gt; + &lt;主机号&gt; }</p>
+<p>三级IP：{ &lt;网络号&gt; + &lt;子网号&gt; + &lt;主机号&gt; }</p>
+<p>如图：</p>
+<p><img src="https://s2.loli.net/2022/05/09/x7BGkZOAhSz82TD.png" alt="IP地址结构.png" loading="lazy"></p>
+<ul>
+<li><p>ABCDE五类网络：</p>
+<p>  以IP地址结构为W.X.Y.Z来说明：</p>
+<ul>
+<li><p>A类：</p>
+<ul>
+<li><p>网络ID占用一个字节W，W第一位固定为0，剩余7位可用， 又因为IP地址中0.与127.要保留，故可用的7位取值范围为二进制的000 0001到111 1110，即十进制的1-126，即它可以提供126个A类的网络ID。</p>
+</li>
+<li><p>主机ID共占用X、Y、Z字节（24位），此24位可以支持（2^24^）-2&#x3D;16777214台主机。</p>
+</li>
+</ul>
+</li>
+<li><p>B类：</p>
+<ul>
+<li><p>网络ID占用两个字节W、X。W前两位固定为10，后六位范围为00 0000~11 1111；故整个W的范围为128(1000 0000)到191(1011 1111)，X的范围为0到255，故它可提供(191-128+1)*256&#x3D;16384个B类的网络。</p>
+<p>  又∵128.0.0.0与191.255.0.0为保留位，故实际上可提供的网络ID为16384-2&#x3D;16382个。</p>
+</li>
+<li><p>主机ID共占用Y、Z两个字节，因此每个网络可支持（2^16^）-2 &#x3D; 65534台主机</p>
+</li>
+</ul>
+</li>
+<li><p>C类：</p>
+<ul>
+<li><p>其网络ID占用三个字节W、X、Y。W前三位固定为110，故其范围为192(1100 0000)到223(1101 1111)，它可以提供（223-192+1）* 256*256&#x3D;2097152个C类的网络。（保留位同上，不再复述）</p>
+</li>
+<li><p>主机ID只占用一个字节Z，因此每个网络可支持（2^8^）-2&#x3D;254台主机</p>
+</li>
+</ul>
+</li>
+<li><p>D类：它是组播(multicast，或译为多播)所使用多组ID（group id），这个组内包含着多台主机。W前四位固定为1110，范围为224到239</p>
+</li>
+<li><p>E类：它保留给未来使用或供实验用途，W前四位固定为1111，范围为240到254</p>
+</li>
+</ul>
+<p>  地址范围（包括网络地址本身，广播地址，私有地址等）</p>
+<p>  A类：1.0.0.0      ~  127.255.255.255</p>
+<p>  B类：128.0.0.0  ~  191.255.255.255</p>
+<p>  C类：192.0.0.0  ~  223.255.255.255</p>
+<p>  D类：224.0.0.0  ~  239.255.255.255</p>
+<p>  E类：240.0.0.0  ~  247.255.255.255</p>
+</li>
+</ul>
+<h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><p>子网掩码用二进制标识，也是一个32位的数字，对应IP地址网络标识部分的位（网络号 + 子网号）全部为1，对应IP地址主机标识的部分都为0。</p>
+<p>子网掩码不能单独使用，必须结合IP地址，它屏蔽IP地址的一部分以区别网络标识和主机标识，并说明该IP地址是局域网还是远程网。</p>
+<p>10001101    00001110  01001000  00011000  IP：141.14.72.24</p>
+<p>11111111    11111111  11000000  00000000  掩码：255.255.292.0</p>
+<p>以IP逐位并掩码：</p>
+<p>10001101    00001110  01000000  00000000  网络地址：141.14.64.0</p>
+<h2 id="无类型域间选路-Classless-InterDomain-Routing-CIDR"><a href="#无类型域间选路-Classless-InterDomain-Routing-CIDR" class="headerlink" title="无类型域间选路 (Classless InterDomain Routing) CIDR"></a>无类型域间选路 (Classless InterDomain Routing) CIDR</h2><p>若子网号连续，则可以用斜号+数字表示网络部分的长度。</p>
+<p>某地址块为200.23.16.0&#x2F;23，则其</p>
+<p>子网掩码为：255.255.254.0(<br>    <strong>11111111.11111111.1111111</strong>0.0000)</p>
+<p>网络地址为：200.23.16.0 (主机比特全0)(<br><strong>11001000.00010111.0001000</strong>0.00000000)</p>
+<p>可用主机地址为：200.23.16.1<del>200.23.17.254(<br><strong>11001000.00010111.0001000</strong>0.00000001</del><br><strong>11001000.00010111.0001000</strong>1.11111110)</p>
+<p>广播地址为：200.23.17.255 (主机比特全1) (<br><strong>11001000.00010111.0001000</strong>1.11111111)</p>
+<h2 id="子网掩码应用"><a href="#子网掩码应用" class="headerlink" title="子网掩码应用"></a>子网掩码应用</h2><h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><p>某A类网络20.0.0.0的子网掩码为255.224.0.0，请确定可以划分的子网个数，写出每个子网的子网号。</p>
+<blockquote>
+<p>解析：A类网络子网掩码默认为255.0.0.0，所以多出来的224就是子网号，也就是11100000。前三位全是1，所以子网号占据前三位，共有2^3^&#x3D;8个子网个数</p>
+</blockquote>
+<p>解答：A类网络的默认子网掩码为255.0.0.0，根据题意，第二个字节的子网掩码为224，即11100000，可知该网络使用第二个字节的前三个比特进行了子网划分，因此划分的子网数为2^3^&#x3D;8</p>
+<p>8个子网号分别为：</p>
+<p>20.<strong>000</strong>00000.0.0 即 20.<strong>0</strong>.0.0<br>20.<strong>001</strong>00000.0.0 即 20.<strong>32</strong>.0.0<br>20.<strong>010</strong>00000.0.0 即 20.<strong>64</strong>.0.0<br>20.<strong>011</strong>00000.0.0 即 20.<strong>96</strong>.0.0<br>20.<strong>100</strong>00000.0.0 即 20.<strong>128</strong>.0.0<br>20.<strong>101</strong>00000.0.0 即 20.<strong>160</strong>.0.0<br>20.<strong>110</strong>00000.0.0 即 20.<strong>192</strong>.0.0<br>20.<strong>111</strong>00000.0.0 即 20.<strong>224</strong>.0.0</p>
+<h3 id="二"><a href="#二" class="headerlink" title="二"></a>二</h3><p>将某c类网200.161.30.0划分为4个子网，请计算出每个子网的有效的主机IP地址范围和对应的子网掩码。</p>
+<blockquote>
+<p>解析：C类网络占据三个字节，默认子网掩码为255.255.255.0。划分子网需要在最后一个字节上添加掩码，由于要划分为4个子网，故使用2位掩码，剩余6位为主机IP使用范围。</p>
+</blockquote>
+<p>解答：解析见上方</p>
+<p>子网掩码为255.255.255.<strong>11</strong>000000 即 255.255.255.192</p>
+<p>两位掩码提供了4个子网IP容量，分别是：</p>
+<p>200.161.30.<strong>00</strong>000000 即 200.161.30.<strong>0</strong><br>200.161.30.<strong>01</strong>000000 即 200.161.30.<strong>64</strong><br>200.161.30.<strong>10</strong>000000 即 200.161.30.<strong>128</strong><br>200.161.30.<strong>11</strong>000000 即 200.161.30.<strong>192</strong></p>
+<p>每个子网内的有效主机IP范围分别是：</p>
+<p><code>子网IP</code>+000001 ~ <code>子网IP</code>+111110</p>
+<h3 id="三"><a href="#三" class="headerlink" title="三"></a>三</h3><p>某公司申请到的网络地址为192.3.2.0，现要划分给5个子公司，最大的一个子公司有28台计算机，每个子公司在一个子网中，则<br>(1) 子网掩码应是多少？<br>(2) 5个子公司的网络地址分别是什么？</p>
+<blockquote>
+<p>解析：由第一个字节为192判断出该地址为c类地址。由于要5个子网，2^2^&lt;5&lt;2^3^，故应使用3位子网掩码，提供8个子网IP容量。<br>剩下5位可以提供2^5^-2&#x3D;30个IP地址，足够供应28台机器。。</p>
+</blockquote>
+<p>解答：192.3.2.0为C类地址，默认子网掩码为255.255.255.0。要划分子网，应在最后一个字节处添加掩码。</p>
+<p>由于要划分为5个子网，故使用3位掩码</p>
+<p>即255.255.255.11100000，即255.255.255.224</p>
+<p>5个子公司的网络地址可以在以下8个IP中选择：</p>
+<p>192.3.2.<strong>000</strong>00000 即 192.3.2.<strong>0</strong><br>192.3.2.<strong>001</strong>00000 即 192.3.2.<strong>32</strong><br>192.3.2.<strong>010</strong>00000 即 192.3.2.<strong>64</strong><br>192.3.2.<strong>011</strong>00000 即 192.3.2.<strong>96</strong><br>192.3.2.<strong>100</strong>00000 即 192.3.2.<strong>128</strong><br>192.3.2.<strong>101</strong>00000 即 192.3.2.<strong>160</strong><br>192.3.2.<strong>110</strong>00000 即 192.3.2.<strong>192</strong><br>192.3.2.<strong>111</strong>00000 即 192.3.2.<strong>224</strong></p>
+<h3 id="四"><a href="#四" class="headerlink" title="四"></a>四</h3><p>某单位申请了一段IP地址：200.23.16.0&#x2F;23。单位内由4个部门(A,B,C,D)组成，每个部门的主机数量分别是：200(A), 100(B), 50(C), 40(D)。试将单位的总地址块200.23.16.0&#x2F;23划分为4个子网分配各4个部门。</p>
+<ol>
+<li>写出每个子网（地址块）</li>
+<li>每个子网的网络前缀？子网掩码？</li>
+<li>每个子网的广播地址？主机可用地址范围？</li>
+</ol>
+<p>注：200.23.16.0&#x2F;23的二进制表示<br><ins><strong>11001000  00010111  0001000</strong></ins>0  00000000 </p>
+<blockquote>
+<p>解析：2^8^-2 &gt; 200 &gt; 2^7^-2 &gt; 100 &gt; 2^6^-2 &gt; 50&gt;40 &gt; 2^5^-2<br>故A公司至少使用8位主机IP，B公司至少使用7位，C&#x2F;D至少使用6位<br>即A可以使用子网网络前缀&#x2F;24，B可以使用&#x2F;25，C&#x2F;D可以使用&#x2F;26</p>
+</blockquote>
+<p>解答：（解析略，见上文）</p>
+<p>故存在以下方法划分子网：</p>
+<p>A：<strong>11001000  00010111  0001000</strong><code>0</code>  00000000<br>子网网络前缀&#x2F;24 子网掩码255.255.255.0<br>子网广播地址200.23.16.255 主机可用地址范围：200.23.16.00000001~200.23.16.11111110<br>B：<strong>11001000  00010111  0001000</strong><code>1  0</code>0000000 子网网络前缀&#x2F;25 略<br>C：<strong>11001000  00010111  0001000</strong><code>1  10</code>000000 子网网络前缀&#x2F;26 略<br>D：<strong>11001000  00010111  0001000</strong><code>1  11</code>000000 子网网络前缀&#x2F;26 略</p>
+<h2 id="私有地址"><a href="#私有地址" class="headerlink" title="私有地址"></a>私有地址</h2><p>在互联王中不使用，仅在局域网中使用的IP地址</p>
+<ul>
+<li><p>10.X.X.X A类</p>
+</li>
+<li><p>172.16.0.0~172.31.255.255 B类</p>
+</li>
+<li><p>192.168.X.X C类</p>
+</li>
+</ul>
+<h2 id="NAT技术"><a href="#NAT技术" class="headerlink" title="NAT技术"></a>NAT技术</h2><p>所有数据报离开本地网络具有相同的单一源地址：NAT IP地址；拥有不同的源端口号</p>
+<p>示例：</p>
+<p>存在NAT转换表</p>
+<table>
+<thead>
+<tr>
+<th>LAN侧地址（内网地址）</th>
+<th>WAN侧地址（公网地址）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.0.0.1 : 3345</td>
+<td>138.76.29.7 : 5001</td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+</tr>
+</tbody></table>
+<p>存在NAT结构：</p>
+<pre class="mermaid">graph LR
+
+    subgraph NAT
+        LAN(LAN 10.0.0.4) --> WAN(WAN 138.76.29.7)
+    end
+
+    1(主机一 10.0.0.1) --> LAN
+    2(主机二 10.0.0.2) --> LAN
+    3(主机三 10.0.0.3) --> LAN
+
+    WAN --> 公网</pre>
+<p>主机一与外网交流过程：</p>
+<p>① 主机10.0.0.1发送数据报到128.119.40.186:80</p>
+<p>② NAT路由器将数据报源地址从10.0.0.1:3345改变到138.76.29.7:5001，更新表</p>
+<p>[目的地处理数据报…]</p>
+<p>③ 回答返回到目的地址138.76.29.7:5001</p>
+<p>④ NAT将数据报目的地址从138.76.29.7:5001改变到138.76.29.7:5001</p>
+<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p>IP网络尽力而为，不可靠，ICMP通过差错报文和询问报文来辅助IP网络的功能</p>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><p>懒得写</p>
+<h1 id="选路算法"><a href="#选路算法" class="headerlink" title="选路算法"></a>选路算法</h1><p>选路协议：决定从源到目的地通过网络的“好的路径”（路由器序列）</p>
+<h2 id="链路状态选路算法"><a href="#链路状态选路算法" class="headerlink" title="链路状态选路算法"></a>链路状态选路算法</h2><h3 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h3><ul>
+<li><p>所有节点知道网络拓扑、链路费用</p>
+<ul>
+<li><p>经“链路状态广播”完成</p>
+</li>
+<li><p>所有节点具有相同信息</p>
+</li>
+</ul>
+</li>
+<li><p>从一个节点到所有其他节点计算最低费用路径</p>
+<ul>
+<li>给出对这些节点的转发表</li>
+</ul>
+</li>
+<li><p>迭代：k次迭代后，得知k个目的地的最低费用路径</p>
+</li>
+</ul>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li><p>D(v)：从源到目的地v，沿着最低费用路径的费用</p>
+</li>
+<li><p>c(x,y)：从节点x到y的链路费用；若xy不相邻，则c(x,y) &#x3D; ∞</p>
+</li>
+<li><p>p(v)：从源到v沿最低费用路径，v的前一个节点</p>
+</li>
+<li><p>N’：一个节点集合，如果从源节点到v的最低费用路径已知，则v在N’中</p>
+</li>
+</ul>
+<h3 id="具体算法"><a href="#具体算法" class="headerlink" title="具体算法"></a>具体算法</h3><h4 id="初始化："><a href="#初始化：" class="headerlink" title="初始化："></a>初始化：</h4><ol>
+<li><p>N’&#x3D;{u} （u为源节点）</p>
+</li>
+<li><p>对所有节点v：</p>
+</li>
+</ol>
+<p>if v临近u:<br>    D(v)&#x3D;c(u,v)<br>else:<br>    D(v) &#x3D; ∞</p>
+<h4 id="算法开始："><a href="#算法开始：" class="headerlink" title="算法开始："></a>算法开始：</h4><ol>
+<li><p>找出不在N’中，且D(w)最小的w</p>
+</li>
+<li><p>将w加入N’中</p>
+</li>
+<li><p>对于所有v临近w并且不在N’中，更新D(v)：<br> D(v) &#x3D; min( D(v), D(w)+c(w,v) )<br> &#x2F;*到v的新费用或是到v的老费用，或是到w加上从w到v的已知最短路费用*&#x2F;</p>
+</li>
+<li><p>重复1~3，直到所有点都在N’中</p>
+</li>
+</ol>
+<h3 id="算法复杂性："><a href="#算法复杂性：" class="headerlink" title="算法复杂性："></a>算法复杂性：</h3><p>对于n个节点</p>
+<p>每次迭代：需要检查所有不在N中的节点</p>
+<h2 id="距离矢量算法"><a href="#距离矢量算法" class="headerlink" title="距离矢量算法"></a>距离矢量算法</h2><h3 id="动态规划算法"><a href="#动态规划算法" class="headerlink" title="动态规划算法"></a>动态规划算法</h3><h4 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h4><ul>
+<li><p>d<del>x</del>(y)：从x到y最低费用路径的费用</p>
+</li>
+<li><p>方程：d<del>x</del>(y) &#x3D; min<del>v</del>{ c(x,v) + d<del>v</del>(y) }</p>
+<p>  v表示x的邻居，min<del>v</del>{}表示对x的所有邻居遍历</p>
+</li>
+</ul>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>对于每个节点x</p>
+<ol>
+<li><p>在每个节点建立自己的距离向量表并初始化</p>
+</li>
+<li><p>每个节点将自己维护的距离向量表向其邻居节点转发</p>
+</li>
+<li><p>每个节点收到邻居节点发送的距离向量表以后，基于新的信息采用方程来更新自己的距离向量表</p>
+</li>
+<li><p>当自己的距离向量表发生变化时，将新的距离向量表发送给自己的邻居节点，如果与以前的向量表相同则不向其邻居节点转发，知道每个节点的距离向量表达到稳定为止</p>
+</li>
+</ol>
+<p>应用举例：</p>
+<p><img src="https://s2.loli.net/2022/06/12/otcE3bJYAkvuV9Q.png" alt="距离矢量算法举例.png" loading="lazy"></p>
+<p>要求d<del>u</del>(z)，显然已知d<del>v</del>(z)&#x3D;5，d<del>x</del>(z)&#x3D;3，d<del>w</del>(z)&#x3D;3</p>
+<p>则d<del>u</del>(z) &#x3D; min{<br>    c(u,v) + d<del>v</del>(z),<br>    c(u,x) + d<del>x</del>(z),<br>    c(u,w) + d<del>w</del>(z)<br>} &#x3D; min{<br>    2 + 5,<br>    1 + 3,<br>    5 + 3<br>} &#x3D; 4</p>
+<h4 id="迭代、异步"><a href="#迭代、异步" class="headerlink" title="迭代、异步"></a>迭代、异步</h4><p>每次本地迭代由下列引起：</p>
+<ul>
+<li><p>本地链路费用改变</p>
+</li>
+<li><p>DV从邻居更新报文</p>
+</li>
+</ul>
+<p>如果DV变化，通知邻居</p>
+<h1 id="互联网中选路"><a href="#互联网中选路" class="headerlink" title="互联网中选路"></a>互联网中选路</h1><h2 id="“距离”的定义"><a href="#“距离”的定义" class="headerlink" title="“距离”的定义"></a>“距离”的定义</h2><ul>
+<li><p>从一路由器到直接连接的网络的距离定义为1</p>
+</li>
+<li><p>从一个路由器到非直接连接的网络的距离定义为所经过的路由器数+1</p>
+</li>
+<li><p>RIP协议中的“距离”也称为“跳数”，因为每经过一个路由器，跳数就+1</p>
+</li>
+<li><p>RIP认为一个好的路由就是经过的路由器数目少，即“距离短”</p>
+</li>
+<li><p>RIP允许一条路径最多只能包含15个路由器，“距离”的最大值为16时认为不可达</p>
+</li>
+</ul>
+<h2 id="RIP协议的三个要点"><a href="#RIP协议的三个要点" class="headerlink" title="RIP协议的三个要点"></a>RIP协议的三个要点</h2><ul>
+<li><p>仅和相邻路由器交换信息</p>
+</li>
+<li><p>交换的信息是当前本路由器所知道的全部信息</p>
+</li>
+<li><p>按固定的时间间隔交换路由信息</p>
+</li>
+</ul>
+<h2 id="路由表的建立"><a href="#路由表的建立" class="headerlink" title="路由表的建立"></a>路由表的建立</h2><ul>
+<li><p>路由器在刚刚开始工作时，只知道到之间连接的网络的距离（该距离定义为1）</p>
+</li>
+<li><p>之后，每一个路由器也之和相邻的路由器交换并更新路由信息</p>
+</li>
+<li><p>经过若干次更新后，所有路由器最终都会知道本自治系统中任何一个网络的最短距离和下一跳路由器的地址</p>
+</li>
+</ul>
+<h2 id="距离向量算法"><a href="#距离向量算法" class="headerlink" title="距离向量算法"></a>距离向量算法</h2><p>收到邻居的路由器表，将所有“距离”字段+1</p>
+<ol>
+<li><p>若收到的项目不在路由器表中，加入</p>
+</li>
+<li><p>若收到的项目距离小于路由器表中的记录，更新</p>
+</li>
+</ol>
+<p>若三分钟没有收到相邻路由器的更新，将该邻居设为16，不可到达。</p>
+</div></section><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>绮罗传香</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://sagirichan.com/2022/06/13/computer-network-note-networkLayer/" title="计网复习笔记-网络层">http://sagirichan.com/2022/06/13/computer-network-note-networkLayer/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2022/06/13/computer-network-note-linkLayer/" rel="prev" title="计网复习笔记-链路层"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">计网复习笔记-链路层</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/06/12/computer-network-note-transportLayer/" rel="next" title="计网复习笔记-传输层"><span class="post-nav-text">计网复习笔记-传输层</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>此博客未支持评论系统，欢迎点击下方按钮，前往本站仓库提出issue</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/Ireinasan/ireinasan.github.io/issues?q=is:issue+计网复习笔记-网络层">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 绮罗传香</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.9.1</span></div></footer><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div id="local-search-result"></div></div></div></body></html>

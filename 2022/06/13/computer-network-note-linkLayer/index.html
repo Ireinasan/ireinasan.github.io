@@ -1,0 +1,769 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="绮罗传香"><meta name="copyright" content="绮罗传香"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>计网复习笔记-链路层 | 绮罗传香度良辰</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.2.4/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="//at.alicdn.com/t/font_1140697_dxory92pb0h.js" async></script><script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/mini.global.js"></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/auto-render.min.js"></script><script type="module">import { renderKatex } from '/js/utils.js'
+document.addEventListener("DOMContentLoaded", () => {
+  renderKatex({
+    ...{},
+    ...true?.options,
+  });
+});</script><link rel="icon" type="image/png" href="/%E5%93%87%E5%93%A6.ico"><link rel="mask-icon" href="/%E5%93%87%E5%93%A6.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"sagirichan.com","root":"/","title":"绮罗传香度良辰","version":"1.9.1","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":null},"vendors":{"darken":"https://cdn.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="绮罗传香度良辰" type="application/atom+xml"><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><meta name="description" content="概述数据链路层经一条链路，将数据从一个节点传输到相邻节点 节点：主机和路由器 链路：连接通信路径中相邻节点的路径 链路层服务 将数据报封装进帧  帧首部的MAC地址标识源、目的地  相邻节点的可靠交付  流量控制  差错检测  纠错   差错检测和纠错基本原理 发送方：信息数据+冗余数据  接收方：检查信息数据和冗余数据的关系，发现差错   奇偶校验设置奇偶校验位  1的数量为奇数，奇偶校验位设为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计网复习笔记-链路层">
+<meta property="og:url" content="http://sagirichan.com/2022/06/13/computer-network-note-linkLayer/index.html">
+<meta property="og:site_name" content="绮罗传香度良辰">
+<meta property="og:description" content="概述数据链路层经一条链路，将数据从一个节点传输到相邻节点 节点：主机和路由器 链路：连接通信路径中相邻节点的路径 链路层服务 将数据报封装进帧  帧首部的MAC地址标识源、目的地  相邻节点的可靠交付  流量控制  差错检测  纠错   差错检测和纠错基本原理 发送方：信息数据+冗余数据  接收方：检查信息数据和冗余数据的关系，发现差错   奇偶校验设置奇偶校验位  1的数量为奇数，奇偶校验位设为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/06/12/ZWXHef7MQKroGaD.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/12/OaSUfYjXrhvcgZw.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/12/xGnfaA8Pt5wDLjE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/12/HVwby3lIQiX91Kk.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/13/iv1dsj8r4PcWzTV.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/13/dW1ilIBK2yRFUSe.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/13/GdxAgawmz3To7cj.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/13/aUJRXQN4c7t5efM.gif">
+<meta property="og:image" content="https://s2.loli.net/2022/06/13/8XnezjQuigMvDwF.png">
+<meta property="article:published_time" content="2022-06-12T18:49:43.000Z">
+<meta property="article:modified_time" content="2022-06-12T18:50:19.530Z">
+<meta property="article:author" content="绮罗传香">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/12/ZWXHef7MQKroGaD.png"><script type="module">import { getScript } from '/js/utils.js'
+getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
+  const mermaidOptions = {"startOnload":true}
+  mermaid.initialize(mermaidOptions);
+}, window.mermaid);
+</script><style>.mermaid{background: transparent;}</style><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="绮罗传香"><img width="96" loading="lazy" src="https://s2.loli.net/2022/05/16/FuHGYpD4vVxLU2i.jpg" alt="绮罗传香"><span class="site-author-status" title="一切都会好起来的">:-)</span></a><div class="site-author-name"><a href="/about/">绮罗传香</a></div><span class="site-name">绮罗传香度良辰</span><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="我的主页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">1</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">5</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/Ireinasan" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=608906376" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/428379308" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.</span> <span class="toc-text">链路层服务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B%E5%92%8C%E7%BA%A0%E9%94%99"><span class="toc-number">2.</span> <span class="toc-text">差错检测和纠错</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="toc-number">2.2.</span> <span class="toc-text">奇偶校验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E5%92%8C"><span class="toc-number">2.3.</span> <span class="toc-text">检查和</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E7%A0%81%E6%A0%A1%E9%AA%8C-CRC"><span class="toc-number">2.4.</span> <span class="toc-text">循环冗余码校验 CRC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-number">2.4.1.</span> <span class="toc-text">基本思想</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AC%E9%83%A8%E5%88%86%E4%B8%AD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%99%A4%E6%B3%95"><span class="toc-number">2.4.1.1.</span> <span class="toc-text">本部分中的二进制除法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-number">2.4.2.</span> <span class="toc-text">构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E9%94%99%E5%92%8C%E7%BA%A0%E9%94%99"><span class="toc-number">2.4.3.</span> <span class="toc-text">检错和纠错</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.</span> <span class="toc-text">多路访问协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E6%83%B3%E7%9A%84%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.1.</span> <span class="toc-text">理想的多路访问协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MAC%E5%8D%8F%E8%AE%AE%E5%88%86%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">MAC协议分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%92%E5%88%86%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.3.</span> <span class="toc-text">信道划分协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E5%88%86%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9ATDMA"><span class="toc-number">3.3.1.</span> <span class="toc-text">时分多路复用：TDMA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%91%E5%88%86%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9AFDMA"><span class="toc-number">3.3.2.</span> <span class="toc-text">频分多路复用：FDMA</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.4.</span> <span class="toc-text">随机访问协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%9A%99ALOHA"><span class="toc-number">3.4.1.</span> <span class="toc-text">时隙ALOHA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E6%97%B6%E9%9A%99ALOHA"><span class="toc-number">3.4.2.</span> <span class="toc-text">非时隙ALOHA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSMA%EF%BC%88%E8%BD%BD%E6%B3%A2%E4%BE%A6%E5%90%AC%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%EF%BC%89"><span class="toc-number">3.4.3.</span> <span class="toc-text">CSMA（载波侦听多路访问）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSMA-x2F-CD"><span class="toc-number">3.4.4.</span> <span class="toc-text">CSMA&#x2F;CD</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9D%E8%BD%AE%E6%B5%81%E2%80%9CMAC%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.5.</span> <span class="toc-text">”轮流“MAC协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AE%E8%AF%A2%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.5.1.</span> <span class="toc-text">轮询协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.5.2.</span> <span class="toc-text">令牌协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E7%BC%96%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">链路层编址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP%EF%BC%9A%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.1.</span> <span class="toc-text">ARP：地址解析协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ARP%E5%8D%8F%E8%AE%AE%EF%BC%9A%E7%9B%B8%E5%90%8C%E7%9A%84LAN%EF%BC%88%E7%BD%91%E7%BB%9C%EF%BC%89"><span class="toc-number">4.1.1.</span> <span class="toc-text">ARP协议：相同的LAN（网络）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E8%B7%AF%E5%88%B0%E5%8F%A6%E4%B8%80%E4%B8%AAARP"><span class="toc-number">4.1.2.</span> <span class="toc-text">选路到另一个ARP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">5.</span> <span class="toc-text">以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%B8%A7%E7%BB%93%E6%9E%84"><span class="toc-number">5.1.</span> <span class="toc-text">以太网帧结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BD%BF%E7%94%A8CSMA-x2F-CD%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.2.</span> <span class="toc-text">以太网使用CSMA&#x2F;CD协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%95%B0%E5%9B%9E%E9%80%80%E6%96%B9%E6%B3%95"><span class="toc-number">5.2.1.</span> <span class="toc-text">指数回退方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%EF%BC%88%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%BC%96%E7%A0%81%E6%8A%80%E6%9C%AF%E4%B9%8B%E4%B8%80%EF%BC%89"><span class="toc-number">5.3.</span> <span class="toc-text">曼彻斯特编码（以太网编码技术之一）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">6.</span> <span class="toc-text">交换机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">6.1.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E9%9A%94%E7%A6%BB"><span class="toc-number">6.2.</span> <span class="toc-text">流量隔离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E6%9C%BAvs%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-number">6.3.</span> <span class="toc-text">交换机vs路由器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PPP"><span class="toc-number">7.</span> <span class="toc-text">PPP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E9%93%BE%E8%B7%AF%E5%B1%82%E6%8E%A7%E5%88%B6"><span class="toc-number">7.1.</span> <span class="toc-text">点对点链路层控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="toc-number">7.2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E6%88%90"><span class="toc-number">7.3.</span> <span class="toc-text">组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E5%A1%AB%E5%85%85"><span class="toc-number">7.3.1.</span> <span class="toc-text">字节填充</span></a></li></ol></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://sagirichan.com/2022/06/13/computer-network-note-linkLayer/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="绮罗传香"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="绮罗传香度良辰"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">计网复习笔记-链路层</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <span class="post-meta-icon-text">发表于</span> <time title="创建时间：2022-06-13 02:49:43" itemprop="dateCreated datePublished" datetime="2022-06-13T02:49:43+08:00">2022-06-13</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">3.7k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">13m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">学习笔记</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">计算机网络</span></a><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:DarkTurquoise"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>数据链路层经一条链路，将数据从一个节点传输到相邻节点</p>
+<p>节点：主机和路由器</p>
+<p>链路：连接通信路径中相邻节点的路径</p>
+<h2 id="链路层服务"><a href="#链路层服务" class="headerlink" title="链路层服务"></a>链路层服务</h2><ul>
+<li><p>将数据报封装进帧</p>
+</li>
+<li><p>帧首部的MAC地址标识源、目的地</p>
+</li>
+<li><p>相邻节点的可靠交付</p>
+</li>
+<li><p>流量控制</p>
+</li>
+<li><p>差错检测</p>
+</li>
+<li><p>纠错</p>
+</li>
+</ul>
+<h1 id="差错检测和纠错"><a href="#差错检测和纠错" class="headerlink" title="差错检测和纠错"></a>差错检测和纠错</h1><h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><ul>
+<li><p>发送方：信息数据+冗余数据</p>
+</li>
+<li><p>接收方：检查信息数据和冗余数据的关系，发现差错</p>
+</li>
+</ul>
+<h2 id="奇偶校验"><a href="#奇偶校验" class="headerlink" title="奇偶校验"></a>奇偶校验</h2><p>设置奇偶校验位</p>
+<ul>
+<li><p>1的数量为奇数，奇偶校验位设为1</p>
+</li>
+<li><p>1的数量为偶数，奇偶校验位设为0</p>
+</li>
+</ul>
+<h2 id="检查和"><a href="#检查和" class="headerlink" title="检查和"></a>检查和</h2><ul>
+<li><p>发送方计算检查和：求和、回卷、求反（运输层UDP部分）</p>
+</li>
+<li><p>接收方重新计算检查和，与字段值进行对比</p>
+</li>
+</ul>
+<h2 id="循环冗余码校验-CRC"><a href="#循环冗余码校验-CRC" class="headerlink" title="循环冗余码校验 CRC"></a>循环冗余码校验 CRC</h2><h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><table>
+<thead>
+<tr>
+<th>信息位 K位</th>
+<th>校验位 R位</th>
+</tr>
+</thead>
+</table>
+<p>数据发送、接受方约定一个<strong>除数</strong></p>
+<p><strong>K个信息位和R个校验位</strong>作为<strong>被除数</strong>，添加校验位后需保证除法的余数为0</p>
+<p>收到数据后，进行除法检查余数是否为0</p>
+<p>若余数非0说明出错，进行重传或纠错</p>
+<h4 id="本部分中的二进制除法"><a href="#本部分中的二进制除法" class="headerlink" title="本部分中的二进制除法"></a>本部分中的二进制除法</h4><p>举例：</p>
+<p>生成多项式为$ G(x) &#x3D; x^3 + x^2 + 1 $，即除数为1101。信息码为101001，求CRC码。</p>
+<p>如图。</p>
+<p><img src="https://s2.loli.net/2022/06/12/ZWXHef7MQKroGaD.png" alt="CRC码计算方法.png" loading="lazy"></p>
+<ol>
+<li>首先确定余数位数：余数位数 &#x3D; 除数位数-1 &#x3D; 校验码位数 &#x3D; 3</li>
+</ol>
+<p>由于对校验码的要求是：(信息码+校验码)为除数的整数倍</p>
+<p>故在计算时应在信息码后补[<strong>余数位数</strong>]个0，即3个0</p>
+<ol start="2">
+<li><p>二进制除法，以1、0作为商的每一位</p>
+</li>
+<li><p>对被除数和除数每一位做异或运算（相同为0，不同为1）</p>
+</li>
+<li><p>直至补完3个0，得到校验位</p>
+</li>
+</ol>
+<p>将信息码与校验码拼接得到CRC码</p>
+<h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p><img src="https://s2.loli.net/2022/06/12/OaSUfYjXrhvcgZw.png" alt="CRC生成（批注）.png" loading="lazy"></p>
+<ol>
+<li><p>确定信息码长度K、<em>生成多项式</em>的最高次幂R，CRC位数为N&#x3D;K+R&#x3D;9</p>
+<p> 仍以上文举的例子为例，信息码&#x3D;101001，位数为6；<em>生成多项式</em>&#x3D;x^3^+x^2^+1，最高次幂为3，CRC位数为6+3&#x3D;9</p>
+</li>
+<li><p>移位。信息码左移R位，低位补0（或者理解为，在信息码后补R个0）</p>
+</li>
+<li><p>相除。用2中补完0的数作为被除数，除生成多项式，取余数，生成CRC码。</p>
+</li>
+</ol>
+<h3 id="检错和纠错"><a href="#检错和纠错" class="headerlink" title="检错和纠错"></a>检错和纠错</h3><p>上文生成的CRC为101001001，与1101进行除法，若余数为000，代表没有出错；若余数为010，十进制值为2，代表第2位或第9位出错</p>
+<p><img src="https://s2.loli.net/2022/06/12/xGnfaA8Pt5wDLjE.png" alt="CRC检错.png" loading="lazy"></p>
+<p>对于3位余数，可以表示2^3^-1&#x3D;7位错位（000表示没有出错）</p>
+<p>如果出错的位数没有超过余数所能表示的范围，则出错位之间就算一一对应的关系，CRC码可能纠错。</p>
+<h1 id="多路访问协议"><a href="#多路访问协议" class="headerlink" title="多路访问协议"></a>多路访问协议</h1><p>碰撞：单一广播信道，节点的两个或更多并行传输，产生<strong>干扰</strong>，如果节点同时接收两个或更多信号，则称发生了<strong>碰撞</strong></p>
+<p>决定节点怎样共享信道的分布式算法</p>
+<p>必须使用信道本身，不用外信道来协调</p>
+<h2 id="理想的多路访问协议"><a href="#理想的多路访问协议" class="headerlink" title="理想的多路访问协议"></a>理想的多路访问协议</h2><ol>
+<li><p>当一个节点要传输，它能够以速率R发送</p>
+</li>
+<li><p>当M个节点要传输，每个能以平均速率 $\frac{R}{M}$ 发送</p>
+</li>
+<li><p>全分散</p>
+<ul>
+<li><p>无特殊节点来协调传输</p>
+</li>
+<li><p>无同步时钟、时隙</p>
+</li>
+</ul>
+</li>
+<li><p>简单</p>
+</li>
+</ol>
+<h2 id="MAC协议分类"><a href="#MAC协议分类" class="headerlink" title="MAC协议分类"></a>MAC协议分类</h2><p>三大类：</p>
+<ul>
+<li><p>信道划分</p>
+<ul>
+<li><p>将信道划分为较小的”段“（时隙，频率，编码）</p>
+</li>
+<li><p>为节点分配一部分专用</p>
+</li>
+</ul>
+</li>
+<li><p>随机访问</p>
+<ul>
+<li><p>不划分信道，允许碰撞</p>
+</li>
+<li><p>从”碰撞“恢复</p>
+</li>
+</ul>
+</li>
+<li><p>轮流协议</p>
+<ul>
+<li>节点轮流，有更多信息要发送的能够轮流较长的时间</li>
+</ul>
+</li>
+</ul>
+<h2 id="信道划分协议"><a href="#信道划分协议" class="headerlink" title="信道划分协议"></a>信道划分协议</h2><h3 id="时分多路复用：TDMA"><a href="#时分多路复用：TDMA" class="headerlink" title="时分多路复用：TDMA"></a>时分多路复用：TDMA</h3><ul>
+<li><p>循环访问信道</p>
+</li>
+<li><p>每个站点在每个循环中获得固定长度时隙（长度&#x3D;分组传输时间）</p>
+</li>
+<li><p>不使用的时隙空闲</p>
+</li>
+</ul>
+<p>举例：</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th></th>
+<th>3</th>
+<th>4</th>
+<th></th>
+<th></th>
+<th>1</th>
+<th></th>
+<th>3</th>
+<th>4</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+</table>
+<p>如图，6个站点的的LAN，划分出6段时隙；时隙1、3、4有分组，而2、5、6空闲</p>
+<h3 id="频分多路复用：FDMA"><a href="#频分多路复用：FDMA" class="headerlink" title="频分多路复用：FDMA"></a>频分多路复用：FDMA</h3><ul>
+<li><p>信道频谱划分为频带</p>
+</li>
+<li><p>每个站点分配固定的频带</p>
+</li>
+<li><p>频带中未使用的传输空间空闲</p>
+</li>
+</ul>
+<p>举例：</p>
+<p><img src="https://s2.loli.net/2022/06/12/HVwby3lIQiX91Kk.png" alt="FDMA.png" loading="lazy"></p>
+<p>6个站点的LAN，划分出6道频带；频带1、3、4有分组使用，2、5、6空闲</p>
+<h2 id="随机访问协议"><a href="#随机访问协议" class="headerlink" title="随机访问协议"></a>随机访问协议</h2><ul>
+<li><p>当站点有分组要发送</p>
+<ul>
+<li><p>以信道全部速率R传输</p>
+</li>
+<li><p>节点间无优先权协调</p>
+</li>
+</ul>
+</li>
+<li><p>两个或更多传输节点——碰撞</p>
+</li>
+<li><p><strong>随机访问MAC协议</strong>定义了</p>
+<ul>
+<li><p>如何检测碰撞</p>
+</li>
+<li><p>如何从碰撞中恢复</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="时隙ALOHA"><a href="#时隙ALOHA" class="headerlink" title="时隙ALOHA"></a>时隙ALOHA</h3><ol>
+<li>假定</li>
+</ol>
+<ul>
+<li><p>所有帧有相同长度</p>
+</li>
+<li><p>时间划分为等长时隙，每个时隙能够传输1个帧</p>
+</li>
+<li><p>节点仅在时隙开始时开始传输帧</p>
+</li>
+<li><p>节点是同步的</p>
+</li>
+</ul>
+<ol start="2">
+<li>操作</li>
+</ol>
+<ul>
+<li><p>当节点获得新帧，将在下一个时隙中传输</p>
+</li>
+<li><p>无碰撞，节点能够在下一个时隙中发送新帧</p>
+</li>
+<li><p>如果碰撞，节点在每个后续时隙中以概率p重传帧</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/13/iv1dsj8r4PcWzTV.png" alt="时隙ALOHA.png" loading="lazy"></p>
+<p>如上图所示，c表示碰撞，S表示成功发送帧，E表示空闲时隙</p>
+<p>在第一个C时隙，节点1、2、3同时传输帧，发生碰撞</p>
+<p>在第二个C时隙，节点1、2同时传输帧，发生碰撞</p>
+<p>紧接着下一个时隙，节点2成功发送帧</p>
+<p>以此类推，不再重复描述</p>
+<ol start="3">
+<li>优点</li>
+</ol>
+<ul>
+<li><p>单个活跃节点能够连续地以信道的全速传输</p>
+</li>
+<li><p>高速分散：仅节点中的时隙需要同步</p>
+</li>
+<li><p>简单</p>
+</li>
+</ul>
+<ol start="4">
+<li>缺点</li>
+</ol>
+<ul>
+<li><p>碰撞浪费时隙</p>
+</li>
+<li><p>有空闲时隙</p>
+</li>
+<li><p>节点可能能够以小于传输分组的时间检测到碰撞</p>
+</li>
+<li><p>时钟同步</p>
+</li>
+</ul>
+<ol start="5">
+<li>效率</li>
+</ol>
+<ul>
+<li><p>定义：节点发送成功的时隙与总时隙的长度比值</p>
+</li>
+<li><p>假定N个节点，每个时隙以概率p发送。对于节点一，在某一个时隙中发送成功的概率为 $p(1-p)^{N-1}$</p>
+</li>
+<li><p>任何节点发送成功的概率为 $Np(1-p)^{N-1}$</p>
+</li>
+<li><p>对N节点为使效率最大化，求p，使 $Np(1-p)^{N-1}$ 最大化</p>
+<p>  当N趋近无穷大，取 $Np(1-p)^{N-1}$ 极限，得到 $\frac{1}{e}&#x3D;0.37$</p>
+</li>
+</ul>
+<p>信道用于有用传输的时间是 37%</p>
+<h3 id="非时隙ALOHA"><a href="#非时隙ALOHA" class="headerlink" title="非时隙ALOHA"></a>非时隙ALOHA</h3><ul>
+<li><p>无同步要求</p>
+</li>
+<li><p>当帧到达立即传输</p>
+</li>
+<li><p>碰撞概率增加：在t<del>0</del>发送与在[t<del>0</del>-1, t<del>0</del>+1]的其他帧碰撞</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/06/13/dW1ilIBK2yRFUSe.png" alt="ALOHA.png" loading="lazy"></p>
+<p>纯ALOHA的效率仅为时隙ALOHA效率的一半</p>
+<h3 id="CSMA（载波侦听多路访问）"><a href="#CSMA（载波侦听多路访问）" class="headerlink" title="CSMA（载波侦听多路访问）"></a>CSMA（载波侦听多路访问）</h3><ul>
+<li><p>CSMA：在传输前侦听</p>
+<ul>
+<li><p>如果侦听到信道空闲，传输整个帧</p>
+</li>
+<li><p>如果侦听到信道忙，推迟传输</p>
+</li>
+</ul>
+<p>  <em>不要打断他人说话</em></p>
+</li>
+<li><p>CSMA碰撞</p>
+<ul>
+<li><p>碰撞依然会出现：传播时延导致两个节点也许不能听到其他节点传输</p>
+</li>
+<li><p>整个分组传输时间被浪费</p>
+</li>
+<li><p>举例与传播试验</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CSMA-x2F-CD"><a href="#CSMA-x2F-CD" class="headerlink" title="CSMA&#x2F;CD"></a>CSMA&#x2F;CD</h3><ol>
+<li><p>载波侦听：如同在CSMA</p>
+<ul>
+<li><p>发生碰撞后，在短时间内<strong>检测到碰撞</strong></p>
+</li>
+<li><p>终止碰撞的传输，减少信道浪费</p>
+</li>
+</ul>
+</li>
+<li><p>碰撞检测</p>
+<ul>
+<li><p>在有线的LAN中容易：测量信号强度，比较传输的和接收的信号</p>
+</li>
+<li><p>在无线LAN中困难：无线节点为了节省能源，Frame发送完毕后就会关闭而没有载波</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><em>礼貌的交谈着</em></p>
+<h2 id="”轮流“MAC协议"><a href="#”轮流“MAC协议" class="headerlink" title="”轮流“MAC协议"></a>”轮流“MAC协议</h2><p>信道划分MAC协议：</p>
+<ul>
+<li><p>在高负载时高效、公平地共享信道</p>
+</li>
+<li><p>低负载时低有效：信道访问中延时，有空闲时隙</p>
+</li>
+</ul>
+<p>随机访问MAC协议：</p>
+<ul>
+<li><p>低负载时有效：单个节点能够全面利用信道</p>
+</li>
+<li><p>高负载：碰撞开销</p>
+</li>
+</ul>
+<p>”轮流“协议：</p>
+<ul>
+<li>兼有各方优点</li>
+</ul>
+<h3 id="轮询协议"><a href="#轮询协议" class="headerlink" title="轮询协议"></a>轮询协议</h3><ul>
+<li><p>主节点”邀请“从节点依次传输</p>
+</li>
+<li><p>关注问题：</p>
+<ul>
+<li><p>轮询开销</p>
+</li>
+<li><p>轮询延迟</p>
+</li>
+<li><p>单点故障（主节点）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="令牌协议"><a href="#令牌协议" class="headerlink" title="令牌协议"></a>令牌协议</h3><ul>
+<li><p>控制令牌从一个节点顺序地传递到下一个</p>
+</li>
+<li><p>令牌报文</p>
+</li>
+<li><p>关注问题：</p>
+<ul>
+<li><p>令牌开销</p>
+</li>
+<li><p>时延</p>
+</li>
+<li><p>单点故障（令牌）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="链路层编址"><a href="#链路层编址" class="headerlink" title="链路层编址"></a>链路层编址</h1><ul>
+<li><p>IP地址：</p>
+<ul>
+<li><p>网络层地址</p>
+</li>
+<li><p>用于使数据包到达目的IP子网</p>
+</li>
+</ul>
+</li>
+<li><p>MAC（或LAN或物理或以太网）地址</p>
+<ul>
+<li><p>用于使数据包从一个接口到达另一个物理连接的接口（同一个网络内）</p>
+</li>
+<li><p>48 bit MAC地址（对多数LAN）烧在了适配器ROM中</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ARP：地址解析协议"><a href="#ARP：地址解析协议" class="headerlink" title="ARP：地址解析协议"></a>ARP：地址解析协议</h2><p>问题：已知B的IP地址，怎样决定B的MAC地址？</p>
+<ul>
+<li><p>LAN上的每个IP节点（主机、路由器）都有ARP表</p>
+</li>
+<li><p>ARP表：对某些LAN节点的IP&#x2F;MAC地址映射</p>
+<p>  &lt;IP地址; MAC地址; TTL&gt;</p>
+<ul>
+<li>TTL(寿命)：地址映射将被忘记的时间长度（通常为20分钟）</li>
+</ul>
+</li>
+</ul>
+<h3 id="ARP协议：相同的LAN（网络）"><a href="#ARP协议：相同的LAN（网络）" class="headerlink" title="ARP协议：相同的LAN（网络）"></a>ARP协议：相同的LAN（网络）</h3><ul>
+<li><p>A要向B发送数据报，并且B的MAC地址不再A的ARP表中</p>
+</li>
+<li><p>A<strong>广播</strong>ARP请求分组，包含B的IP地址：</p>
+<ul>
+<li><p>目的地MAC地址&#x3D;FF-FF-FF-FF-FF-FF</p>
+</li>
+<li><p>在LAN上的所有机器接收ARP请求</p>
+</li>
+</ul>
+</li>
+<li><p>B接收ARP分组，用它的MAC地址回答A：帧发送到A的MAC地址（单播）</p>
+</li>
+<li><p>A在它的ARP表中缓存IP到MAC的地址对，直到信息超时。</p>
+<ul>
+<li>软状态：信息超时除非被更新</li>
+</ul>
+</li>
+</ul>
+<p>ARP即插即用：节点创建它们的ARP表无需网络管理员干预</p>
+<h3 id="选路到另一个ARP"><a href="#选路到另一个ARP" class="headerlink" title="选路到另一个ARP"></a>选路到另一个ARP</h3><p>目的：从A到B经R发送数据报。</p>
+<p>A直到B的IP地址</p>
+<p><img src="https://s2.loli.net/2022/06/13/GdxAgawmz3To7cj.png" alt="选路到另一个LAN.png" loading="lazy"></p>
+<p>在路由器R中有两个ARP表，每张表对应一个IP网络（LAN）</p>
+<ol>
+<li><p>A生成具有 <em>源A&amp;目的地B</em> 的数据报</p>
+</li>
+<li><p>A使用ARP从111.111.111.110（R的IP地址）获取R的MAC地址</p>
+</li>
+<li><p>A生成以R的MAC地址作为目的地的链路层帧，帧包含 <em>A-to-B</em> 数据报</p>
+</li>
+<li><p>A的适配器发送帧</p>
+</li>
+<li><p>R的适配器接收帧</p>
+</li>
+<li><p>R从以太网帧取出IP数据报，看到它的目的地是B</p>
+</li>
+<li><p>R使用ARP取得B的MAC地址</p>
+</li>
+<li><p>R生成包含 <em>A-to-B</em> 数据报的帧向B发送</p>
+</li>
+</ol>
+<h1 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h1><ul>
+<li><p>共享式以太网</p>
+<ul>
+<li><p>网络中所有主机的收发都依赖于同一套物理介质，即共享介质</p>
+</li>
+<li><p>同一时刻只能有一台主机在发送，各主机通过遵守CSMA&#x2F;CD规则来保证网络的正常通讯</p>
+</li>
+</ul>
+</li>
+<li><p>交换式以太网</p>
+<ul>
+<li><p>扩展了网络带宽</p>
+</li>
+<li><p>分割了网络冲突域，使得网络冲突被限制在最小的范围内</p>
+</li>
+<li><p>交换机更智能，提供更多功能</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="以太网帧结构"><a href="#以太网帧结构" class="headerlink" title="以太网帧结构"></a>以太网帧结构</h2><p>发送适配器在<strong>以太网帧</strong>（或其他网络层协议分组）中封装IP数据报</p>
+<p><img src="https://s2.loli.net/2022/06/13/aUJRXQN4c7t5efM.gif" alt="以太网帧结构.gif" loading="lazy"></p>
+<ol>
+<li><p>前导码：格式为10101010……，共7字节</p>
+</li>
+<li><p>帧开始定界符：10101011，1字节</p>
+<ul>
+<li>用于同步发送方、接收方时钟速率</li>
+</ul>
+</li>
+<li><p>目的地址、源地址：分别为6字节。当网卡接收到一个数据帧，会检查该帧的目的地址是否与自己匹配，若不匹配，丢弃。</p>
+</li>
+<li><p>类型：指示较高层次协议，2字节。大部分为IP协议。</p>
+</li>
+<li><p>CRC：帧检测字段，4字节。见本文”差错检测“小节</p>
+</li>
+</ol>
+<h2 id="以太网使用CSMA-x2F-CD协议"><a href="#以太网使用CSMA-x2F-CD协议" class="headerlink" title="以太网使用CSMA&#x2F;CD协议"></a>以太网使用CSMA&#x2F;CD协议</h2><ul>
+<li><p>载波侦听：先听再说</p>
+<ul>
+<li>适配器在发送前监听总线是否空闲，若空闲则发送数据</li>
+</ul>
+</li>
+<li><p>冲突检测：边说边听</p>
+<ul>
+<li>数据在发送的同时保持对总线的监听，发现冲突则停止发送</li>
+</ul>
+</li>
+<li><p>随机延迟后重发</p>
+<ul>
+<li>冲突发生后拟采用指数回退方法等待一段随机事件后，再进行监听和发送</li>
+</ul>
+</li>
+</ul>
+<h3 id="指数回退方法"><a href="#指数回退方法" class="headerlink" title="指数回退方法"></a>指数回退方法</h3><ul>
+<li><p>目标：估计当前负载，适应重传尝试</p>
+<ul>
+<li>负载较重：随机等待将更长</li>
+</ul>
+</li>
+<li><p>首次碰撞：从{0,1}中选择K；时延是 $ K • (512bit传输时间) $</p>
+</li>
+<li><p>第二次碰撞后：从{0,1,2,3}中选择K</p>
+</li>
+<li><p>N次碰撞后，从{0,1,…2^N-1}中选择K</p>
+</li>
+</ul>
+<h2 id="曼彻斯特编码（以太网编码技术之一）"><a href="#曼彻斯特编码（以太网编码技术之一）" class="headerlink" title="曼彻斯特编码（以太网编码技术之一）"></a>曼彻斯特编码（以太网编码技术之一）</h2><ul>
+<li><p>用于10 Base T</p>
+</li>
+<li><p>每个比特具有一个跃迁</p>
+</li>
+<li><p>允许发送和接收节点中的时钟互相同步</p>
+<ul>
+<li>节点之间的集中式、全局时钟没有必要</li>
+</ul>
+</li>
+<li><p>位于物理层</p>
+</li>
+</ul>
+<h1 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h1><p>为数据帧从一个端口到另一个任意端口的转发提供了低时延、低开销的通路</p>
+<p>工作在链路层</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><pre class="mermaid">graph BT
+
+1(集线器)
+2(集线器)
+
+A --- 1
+B --- 1
+C --- 1
+
+D --- 2
+E --- 2
+F --- 2
+
+1 --- 交换机
+2 --- 交换机</pre>
+<p>交换表：</p>
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1</td>
+</tr>
+<tr>
+<td>E</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>假定C向D发送帧：</p>
+<ol>
+<li><p>交换机从C接收帧</p>
+<ul>
+<li><p>注意到C位于接口1，将C添加入交换表中：</p>
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1</td>
+</tr>
+<tr>
+<td>E</td>
+<td>2</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>D不在表中，交换机将向接口2和3转发帧</p>
+</li>
+</ul>
+</li>
+<li><p>D接收帧</p>
+</li>
+</ol>
+<p>假定D回答C的帧</p>
+<ol start="3">
+<li><p>交换机从D接收帧</p>
+<ul>
+<li><p>注意到D位于接口2，加入交换表中</p>
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1</td>
+</tr>
+<tr>
+<td>E</td>
+<td>2</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+</tr>
+<tr>
+<td>D</td>
+<td>2</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>因为C在表中，所以直接向接口1转发帧</p>
+</li>
+</ul>
+</li>
+<li><p>C接收帧</p>
+</li>
+</ol>
+<h2 id="流量隔离"><a href="#流量隔离" class="headerlink" title="流量隔离"></a>流量隔离</h2><p>交换机安装将子网分割成LAN段</p>
+<pre class="mermaid">graph BT
+
+subgraph 碰撞域1
+    1(集线器)
+    A --- 1
+    B --- 1
+    C --- 1
+end
+
+subgraph 碰撞域2
+    2(集线器)
+    D --- 2
+    E --- 2
+    F --- 2
+end
+
+1 --- 交换机
+2 --- 交换机</pre>
+
+<p>交换机过滤分组：</p>
+<ul>
+<li><p>相同LAN段的帧通常不再其他LAN段上转发</p>
+</li>
+<li><p>段成为分离的碰撞域</p>
+</li>
+</ul>
+<h2 id="交换机vs路由器"><a href="#交换机vs路由器" class="headerlink" title="交换机vs路由器"></a>交换机vs路由器</h2><ul>
+<li><p>路由器位于网络层，检查网络层首部；交换机位于链路层</p>
+</li>
+<li><p>路由器维护选路表，实现选路算法</p>
+</li>
+<li><p>交换机维护交换机表，实现过滤、学习算法</p>
+</li>
+</ul>
+<h1 id="PPP"><a href="#PPP" class="headerlink" title="PPP"></a>PPP</h1><h2 id="点对点链路层控制"><a href="#点对点链路层控制" class="headerlink" title="点对点链路层控制"></a>点对点链路层控制</h2><p>一个发送方、一个接收方、一段链路</p>
+<p>比广播链路容易处理</p>
+<p>无媒体访问控制；不需要明确的MAC编址</p>
+<h2 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h2><p>PPP协议是在点对点链路上运行的数据链路层协议</p>
+<p>支持用户认证，是广域网接入使用最广泛的协议</p>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p><img src="https://s2.loli.net/2022/06/13/8XnezjQuigMvDwF.png" alt="PPP协议.png" loading="lazy"></p>
+<ol>
+<li><p>标志字段：0x7E(01111110)，1字节。位于开始和结尾，标志PPP数据帧的开始和结束</p>
+</li>
+<li><p>地址字段：FF(11111111)，1字节。用于指定对方的数据链路层地址，但由于PPP是点对点协议，故此字节无意义，填充为0xFF</p>
+</li>
+<li><p>控制字段：固定值0x03，1字节</p>
+</li>
+<li><p>协议字段：指定上层协议（IP等），2字节</p>
+</li>
+<li><p>数据字段：最长不超过1500字节</p>
+</li>
+<li><p>FSC：校验字段，2字节</p>
+</li>
+</ol>
+<h3 id="字节填充"><a href="#字节填充" class="headerlink" title="字节填充"></a>字节填充</h3><p>PPP帧的标志字段为&lt;01111110&gt;，若在数据字段出现该字节会出错。解决方法为字节填充</p>
+<p>当数据字段出现&lt;01111110&gt;字节时：</p>
+<ul>
+<li><p>发送方：重复填充该字节，即将其变为两连续字节：&lt;01111110&gt;&lt;01111110&gt;</p>
+</li>
+<li><p>接受方：</p>
+<ul>
+<li><p>重复&lt;01111110&gt;&lt;01111110&gt;：丢弃第一个字节，继续数据接收</p>
+</li>
+<li><p>单个&lt;01111110&gt;：标志字节</p>
+</li>
+</ul>
+</li>
+</ul>
+</div></section><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>绮罗传香</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://sagirichan.com/2022/06/13/computer-network-note-linkLayer/" title="计网复习笔记-链路层">http://sagirichan.com/2022/06/13/computer-network-note-linkLayer/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/06/13/computer-network-note-networkLayer/" rel="next" title="计网复习笔记-网络层"><span class="post-nav-text">计网复习笔记-网络层</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>此博客未支持评论系统，欢迎点击下方按钮，前往本站仓库提出issue</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/Ireinasan/ireinasan.github.io/issues?q=is:issue+计网复习笔记-链路层">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 绮罗传香</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.9.1</span></div></footer><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div id="local-search-result"></div></div></div></body></html>
