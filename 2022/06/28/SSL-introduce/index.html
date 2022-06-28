@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="绮罗传香"><meta name="copyright" content="绮罗传香"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>SSL介绍 | 绮罗传香度良辰</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.2.4/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="//at.alicdn.com/t/font_1140697_dxory92pb0h.js" async></script><script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/mini.global.js"></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="icon" type="image/png" href="/%E5%93%87%E5%93%A6.ico"><link rel="mask-icon" href="/%E5%93%87%E5%93%A6.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"sagirichan.com","root":"/","title":"绮罗传香度良辰","version":"1.9.1","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":null},"vendors":{"darken":"https://cdn.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="绮罗传香度良辰" type="application/atom+xml"><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><meta name="description" content="参考文章：SSL协议介绍  SSL原理什么是SSLSSL是一种安全套接层协议，是Web浏览器与Web服务器之间安全交换信息的协议，提供两个基本的安全服务：鉴别与保密。 SSL协议的三个特性  保密：   在握手协议中定义了会话密钥后，所有的消息都被加密  鉴别   可选的客户端认证，和强制的服务器端认证  完整性   传送的消息包括消息完整性检查（使用MAC）   SSL的位置SSL截图应用层和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSL介绍">
+<meta property="og:url" content="http://sagirichan.com/2022/06/28/SSL-introduce/index.html">
+<meta property="og:site_name" content="绮罗传香度良辰">
+<meta property="og:description" content="参考文章：SSL协议介绍  SSL原理什么是SSLSSL是一种安全套接层协议，是Web浏览器与Web服务器之间安全交换信息的协议，提供两个基本的安全服务：鉴别与保密。 SSL协议的三个特性  保密：   在握手协议中定义了会话密钥后，所有的消息都被加密  鉴别   可选的客户端认证，和强制的服务器端认证  完整性   传送的消息包括消息完整性检查（使用MAC）   SSL的位置SSL截图应用层和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/horORXGPHxIDFAg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/3gwL1yaMJpIjoBS.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/3n1PeyZcEFbzfsx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/DkywPrJWxpKotBz.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/hYfBH9O2XNFRTm8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/JH9t8p4E7OnaKST.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/ksejYFmQcIyNLZJ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/2B67omNPlTxJReM.png">
+<meta property="og:image" content="https://s2.loli.net/2022/06/27/tDGrNb4HBJMdPOy.png">
+<meta property="article:published_time" content="2022-06-28T06:52:42.000Z">
+<meta property="article:modified_time" content="2022-06-28T06:54:40.942Z">
+<meta property="article:author" content="绮罗传香">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/06/27/horORXGPHxIDFAg.png"><script type="module">import { getScript } from '/js/utils.js'
+getScript("https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js", () => {
+  const mermaidOptions = {"startOnload":true}
+  mermaid.initialize(mermaidOptions);
+}, window.mermaid);
+</script><style>.mermaid{background: transparent;}</style><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="绮罗传香"><img width="96" loading="lazy" src="https://s2.loli.net/2022/05/16/FuHGYpD4vVxLU2i.jpg" alt="绮罗传香"><span class="site-author-status" title="一切都会好起来的">:-)</span></a><div class="site-author-name"><a href="/about/">绮罗传香</a></div><span class="site-name">绮罗传香度良辰</span><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="我的主页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">15</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">1</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">5</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/Ireinasan" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=608906376" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/428379308" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSL%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">SSL原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSSL"><span class="toc-number">1.1.</span> <span class="toc-text">什么是SSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSL%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">SSL的位置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSL%E7%BB%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">SSL组成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSL%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">SSL工作过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%A1%E6%89%8B"><span class="toc-number">3.1.</span> <span class="toc-text">握手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-%E5%BB%BA%E7%AB%8B%E5%AE%89%E5%85%A8%E8%83%BD%E5%8A%9B"><span class="toc-number">3.1.1.</span> <span class="toc-text">第一阶段-建立安全能力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%89%B4%E5%88%AB%E4%B8%8E%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="toc-number">3.1.2.</span> <span class="toc-text">第二阶段-服务器鉴别与密钥交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5-%E5%AE%A2%E6%88%B7%E6%9C%BA%E9%89%B4%E5%88%AB%E4%B8%8E%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="toc-number">3.1.3.</span> <span class="toc-text">第三阶段-客户机鉴别与密钥交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%98%B6%E6%AE%B5-%E5%AE%8C%E6%88%90"><span class="toc-number">3.1.4.</span> <span class="toc-text">第四阶段-完成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E9%98%B6%E6%AE%B5-%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">3.1.5.</span> <span class="toc-text">第五阶段-密钥生成的过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95"><span class="toc-number">3.2.</span> <span class="toc-text">记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E6%8A%A5"><span class="toc-number">3.3.</span> <span class="toc-text">警报</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8wireshark%E5%88%86%E6%9E%90SSL%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">使用wireshark分析SSL握手过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5"><span class="toc-number">4.1.</span> <span class="toc-text">第一阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5"><span class="toc-number">4.2.</span> <span class="toc-text">第二阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5"><span class="toc-number">4.3.</span> <span class="toc-text">第三阶段</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://sagirichan.com/2022/06/28/SSL-introduce/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="绮罗传香"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="绮罗传香度良辰"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">SSL介绍</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <span class="post-meta-icon-text">发表于</span> <time title="创建时间：2022-06-28 14:52:42" itemprop="dateCreated datePublished" datetime="2022-06-28T14:52:42+08:00">2022-06-28</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">3.3k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">12m</span></span></span><div class="post-classify"></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><blockquote>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/114612812">SSL协议介绍</a></p>
+</blockquote>
+<h1 id="SSL原理"><a href="#SSL原理" class="headerlink" title="SSL原理"></a>SSL原理</h1><h2 id="什么是SSL"><a href="#什么是SSL" class="headerlink" title="什么是SSL"></a>什么是SSL</h2><p>SSL是一种安全套接层协议，是Web浏览器与Web服务器之间安全交换信息的协议，提供两个基本的安全服务：鉴别与保密。</p>
+<p>SSL协议的三个特性</p>
+<ul>
+<li><p>保密：</p>
+<p>  在握手协议中定义了会话密钥后，所有的消息都被加密</p>
+</li>
+<li><p>鉴别</p>
+<p>  可选的客户端认证，和强制的服务器端认证</p>
+</li>
+<li><p>完整性</p>
+<p>  传送的消息包括消息完整性检查（使用MAC）</p>
+</li>
+</ul>
+<h2 id="SSL的位置"><a href="#SSL的位置" class="headerlink" title="SSL的位置"></a>SSL的位置</h2><p>SSL截图应用层和TCP层之间，应用层数据不再直接传递给传输层，而是传递给SSL层，SSL对从应用层收到的数据进行加密，并增加自己的SSL头</p>
+<pre class="mermaid">graph TD
+
+应用层 --> SSL或TLS
+
+SSL或TLS --> TCP
+
+TCP --> IP</pre>
+
+<h1 id="SSL组成"><a href="#SSL组成" class="headerlink" title="SSL组成"></a>SSL组成</h1><p>SSL的体系结构中包含两个协议子层，其中底层是SSL记录协议层；高层是SSL握手协议层</p>
+<p>SSL协议主要分为两层</p>
+<ul>
+<li><p>SSL记录协议层的作用是为高层协议提供基本的安全服务。SSL记录协议针对HTTP协议进行了特别的设计，使得超文本的传输协议HTTP能够在SSL运行。记录封装各种高层协议，具体实施压缩解压缩、加密解密、计算和校验MAC等与安全有关的操作。</p>
+</li>
+<li><p>SSL握手协议层包括SSL握手协议、SSL密码参数修改协议和SSL警报协议。握手层的这些协议用于SSL管理信息的交换，允许应用协议传输数据之间相互验证，协商加密算法和生成密钥等。</p>
+<p>  SSL握手协议的作用是协调客户和服务器的状态，使双方能够达到状态的同步。</p>
+</li>
+</ul>
+<h1 id="SSL工作过程"><a href="#SSL工作过程" class="headerlink" title="SSL工作过程"></a>SSL工作过程</h1><h2 id="握手"><a href="#握手" class="headerlink" title="握手"></a>握手</h2><p>握手协议是客户机和服务器用SSL连接通信时使用的子协议，握手协议包括客户机与服务器之间的一系列消息。SSL中复杂的协议是握手协议。该协议允许服务器和客户机相互验证，协商加密和MAC算法以及保密密钥，用来保护在SSL记录中发送的数据。握手协议是在应用程序的数据传输之前使用的。</p>
+<p>每个握手协议包含以下3个字段</p>
+<ul>
+<li><p>Type:</p>
+<p>  表示10中消息类型之一，长度1字节</p>
+</li>
+<li><p>Length:</p>
+<p>  表示消息长度字节数，长度3字节</p>
+</li>
+<li><p>Content:</p>
+<p>  与消息相关的参数</p>
+</li>
+</ul>
+<h3 id="第一阶段-建立安全能力"><a href="#第一阶段-建立安全能力" class="headerlink" title="第一阶段-建立安全能力"></a>第一阶段-建立安全能力</h3><p>SSL握手的阶段启动逻辑连接，建立这个连接的安全能力。首先客户机向服务器发出client hello消息并等待服务器响应，随后服务器向客户机翻回server hello消息，对client hello消息中的信息进行确认。</p>
+<p>ClientHello消息包括Version，Random，Session id， Cipher suite，Compression method等信息</p>
+<pre class="mermaid">    sequenceDiagram
+    participant client as 客户
+    participant server as 服务器
+
+    client ->> server: 版本 客户随机数 会话ID<br>密码套件 压缩方法
+
+    server ->> client: 版本 服务器随机数 会话ID<br>选择密码套件 选择压缩方法</pre>
+
+<p>ClientHello 客户发送 ClientHello 信息，包含如下内容：</p>
+<ul>
+<li><p>客户端可以支持SSL高版本号</p>
+</li>
+<li><p>一个用于生成主秘密的32字节的随机数</p>
+</li>
+<li><p>一个确定会话的会话ID</p>
+</li>
+<li><p>一个客户端可以支持的密码套件列表</p>
+<p>  密码套件格式：每个套件都以“SSL”开头，紧跟着的是密钥交换算法。用“With”这个词把密钥交换算法、加密算法、散列算法分开，例如：SSL_DHE_RSA_WITH_DES_CBC_SHA，表示把DES_RSA（带有RSA数字签名的暂时Diffie-HellMan）定义为密钥交换算法；把DES_CBC定义为加密算法；把SHA定义为散列算法。</p>
+</li>
+<li><p>一个客户端可以支持的压缩算法列表</p>
+</li>
+</ul>
+<p>ServerHello服务器用ServerHello信息应答客户，包括下列内容</p>
+<ul>
+<li><p>一个SSL版本号。取客户端支持的高版本号和服务端支持的高版本号中的较低者</p>
+</li>
+<li><p>一个用于生成主秘密的32字节的随机数。（客户端一个、服务端一个）</p>
+</li>
+<li><p>会话ID</p>
+</li>
+<li><p>从客户端的密码套件列标中选择的一个密码套件</p>
+</li>
+<li><p>从客户端的压缩方法的列表中选择的压缩方法</p>
+</li>
+</ul>
+<p>在这个阶段后，客户端服务端了解下列内容：</p>
+<ul>
+<li><p>SSL版本</p>
+</li>
+<li><p>密钥交换、信息验证和加密算法</p>
+</li>
+<li><p>压缩方法</p>
+</li>
+<li><p>有关密钥生成的两个随机数</p>
+</li>
+</ul>
+<h3 id="第二阶段-服务器鉴别与密钥交换"><a href="#第二阶段-服务器鉴别与密钥交换" class="headerlink" title="第二阶段-服务器鉴别与密钥交换"></a>第二阶段-服务器鉴别与密钥交换</h3><p>服务器启动SSL握手第二阶段，是本阶段所有消息的发送方，客户机是所有消息的接收方。该阶段共有4步：</p>
+<ul>
+<li><p>证书：</p>
+<p>  服务端将自己的证书下发给客户端，让客户端验证自己的身份，客户端验证通过后取出证书中的公钥。</p>
+</li>
+<li><p>服务器密钥交换（可选）：</p>
+<p>  根据之前确定的密钥交换方式(RSA或DH等)，包含完成密钥交换所需的一系列参数（例如DH算法要发送DH参数，RSA算法无需服务器密钥交换）。</p>
+</li>
+<li><p>证书请求：</p>
+<p>  服务器用来验证客户端。服务器端发出Certificate Request消息，要求客户端发他自己的证书过来进行验证。该消息中包含服务器端支持的证书类型（RSA、DSA、ECDSA等）和服务器端所信任的所有证书发行机构的CA列表，客户端会用这些信息来筛选证书。</p>
+</li>
+<li><p>服务器握手完成：</p>
+<p>  服务器所有信息发送完毕，等待客户端消息。</p>
+</li>
+</ul>
+<pre class="mermaid">    sequenceDiagram
+    participant client as 客户
+    participant server as 服务器
+
+    note right of server: 证书
+        server ->> client: 一系列证书
+
+    note right of server: 服务器密钥交换
+        server ->> client: 服务器公钥
+
+    ote right of server: 证书请求
+        server ->> client: 可接受证书列表<br>可接受验证列表
+
+    ote right of server: ServerHelloDone
+        server ->> client: 无内容</pre>
+
+<p>这里重点介绍一下服务端的验证和密钥交换。这个阶段的前面的 *证书 和 *服务器密钥交换 是基于密钥交换方法的。而在SSL中密钥交换算法有6种：无效（没有密钥交换）、RSA、匿名Diffie-Hellman、暂时Diffie-Hellman、 固定Diffie-Hellman、Fortezza。</p>
+<p>在阶段1过程客户端与服务段协商的过程中已经确定使用哪种密钥交换算法。</p>
+<p>如果协商过程种确定使用RSA交换密钥，那么过程如下图：</p>
+<pre class="mermaid">    sequenceDiagram
+    participant client as 客户
+    participant server as 服务器
+
+    note right of server: 证书
+        server ->> client: RSA Enc-cert
+
+    server ->> client: 无服务器密钥交换</pre>
+
+<p>这个方法中，服务器在它的第一个信息中，发送了RSA加密&#x2F;解密公钥证书。不过，因为预备主秘密是由客户端在下一个阶段生成并发送的，所以第二个信息是空的。</p>
+<p>注意，公钥证书会进行从服务器到客户端的验证。当服务器收到预备主秘密时，它使用私钥进行解密。服务端拥有私钥是一个证据，可以证明服务器是一个它在第一个信息发送的公钥证书中要求的实体。</p>
+<h3 id="第三阶段-客户机鉴别与密钥交换"><a href="#第三阶段-客户机鉴别与密钥交换" class="headerlink" title="第三阶段-客户机鉴别与密钥交换"></a>第三阶段-客户机鉴别与密钥交换</h3><pre class="mermaid">    sequenceDiagram
+    participant client as 客户
+    participant server as 服务器
+
+    note left of client: 证书
+        client ->> server: 证书链
+
+    note left of client: 客户密钥交换
+        client ->> server: 客户公钥
+
+    note left of client: 证书验证
+        client ->> server: 证明证书的散列代码</pre>
+
+<p>客户机启动SSL握手第三阶段，是本阶段所有消息的发送方，服务器是所有消息的接收方。该阶段分为3步：</p>
+<ul>
+<li><p>证书（可选）：</p>
+<p>  依据服务器要求发送证书，如果没有则发送no_certificate警告。</p>
+</li>
+<li><p>客户机密钥交换：</p>
+<p>  按照不同的密钥交换算法，算出一个pre-master，使用公钥加密发送给服务器。</p>
+<p>  服务器端收到pre-master用私钥解密，结合之前收到的随机数，算出main master。</p>
+<p>  而客户端当然也能自己通过pre-master算出main master。如此以来双方就算出了对称密钥。</p>
+<p>  如果是RSA算法，会生成一个48字节的随机数，然后用server的公钥加密后再放入报文中。</p>
+<p>  如果是DH算法，这是发送的就是客户端的DH参数，之后服务器和客户端根据DH算法，各自计算出相同的pre-master secret.</p>
+</li>
+<li><p>证书验证（可选）：</p>
+<p>  只有在客户端发送了自己证书到服务器端，这个消息才需要发送。其中包含一个签名，对从第一条消息以来的所有握手消息的HMAC值（用master_ secret）进行签名。</p>
+</li>
+</ul>
+<p>下面也重点介绍一下RSA方式的客户端验证和密钥交换。</p>
+<p>S🔒：用服务器公钥S加密<br>Sig<del>c</del>：用客户公钥签名</p>
+<pre class="mermaid">    sequenceDiagram
+    participant client as 客户
+    participant server as 服务器
+
+    client ->> server: 无证书
+
+    note left of client: 客户密钥交换
+        client ->> server: S🔒（预备主秘密）</pre>
+
+<p>这种情况，除非服务器在阶段II明确请求，否则没有证书信息。客户端密钥交换方法包括阶段II收到的由RSA公钥加密的预备主密钥。</p>
+<p>阶段III之后，客户要由服务器进行验证，客户和服务器都知道预备主密钥。</p>
+<h3 id="第四阶段-完成"><a href="#第四阶段-完成" class="headerlink" title="第四阶段-完成"></a>第四阶段-完成</h3><pre class="mermaid">    sequenceDiagram
+    participant client as 客户
+    participant server as 服务器
+
+    note left of client: 改变密码规格
+        client ->> server: 改变密码规格值
+
+    note left of client: 完成
+        client ->> server: MD5散列 + SHA散列
+
+    note right of server: 改变密码规格
+        server ->> client: 改变密码规格值
+
+    note right of server: 完成
+        server ->> client: MD5散列 + SHA散列</pre>
+
+<p>客户机启动SSL握手第4阶段，使服务器结束。该阶段分为4步，前2个消息来自客户机，后2个消息来自服务器</p>
+<p>客户机：</p>
+<ul>
+<li><p>编码变更通知</p>
+</li>
+<li><p>完成：</p>
+<p>  握手结束通知：使用HMAC算法计算收到和发送的所有握手消息的摘要，然后通过RFC5246中定义的一个伪函数PRF计算出结果，加密后发送</p>
+</li>
+</ul>
+<p>服务器：</p>
+<ul>
+<li><p>计算得到协商密钥:</p>
+<p>  enc_key&#x3D;Fuc(random_C, random_S, Pre-Master);</p>
+</li>
+<li><p>计算之前所有接收信息的 hash 值，然后解密客户端发送的 encrypted_handshake_message，验证数据和密钥正确性;</p>
+</li>
+<li><p>发送一个编码变更通知</p>
+</li>
+<li><p>使用Session Secret加密一段 Finish 消息发送给客户端，以验证之前通过握手建立起来的加解密通道是否成功</p>
+</li>
+</ul>
+<h3 id="第五阶段-密钥生成的过程"><a href="#第五阶段-密钥生成的过程" class="headerlink" title="第五阶段-密钥生成的过程"></a>第五阶段-密钥生成的过程</h3><p>握手协议完成，下面看什么是预备主密钥，主密钥是怎么生成的。为了保证信息的完整性和机密性，SSL需要六个加密秘密。为了信息的可信性，客户端需要一个密钥；为了加密，需要一个密钥；为了分组加密，要一个IV。服务端同样如此。SSL需要的密钥是单项的，不同于在其他方向的密钥。如果在一个方向上有攻击，在其他方向上是没有影响的。</p>
+<h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><p>记录协议在客户机和服务器握手成功后使用，即客户机和服务器鉴别对方和确定安全信息交换使用的算法后，进入SSL记录协议，记录协议向SSL连接提供两个服务：</p>
+<ul>
+<li><p>保密性：使用握手协议定义的秘密密钥实现</p>
+</li>
+<li><p>完整性：握手协议定义了MAC，用于保证消息完整性</p>
+</li>
+</ul>
+<p>记录协议的过程：</p>
+<p><img src="https://s2.loli.net/2022/06/27/horORXGPHxIDFAg.png" alt="记录协议的过程.png" loading="lazy"></p>
+<h2 id="警报"><a href="#警报" class="headerlink" title="警报"></a>警报</h2><p>客户机和服务器发现错误时，向对方发送一个警报消息。如果是致命错误，则算法立即关闭SSL连接，双方还会先删除相关的会话号，秘密和密钥。每个警报消息共2个字节，第1个字节表示错误类型，如果是警报，则值为1，如果是致命错误，则值为2；第2个字节制定实际错误类型。</p>
+<h1 id="使用wireshark分析SSL握手过程"><a href="#使用wireshark分析SSL握手过程" class="headerlink" title="使用wireshark分析SSL握手过程"></a>使用wireshark分析SSL握手过程</h1><p>电脑连接校园网无线网，本机IPv6地址为：2001:250:4402:1119::2218</p>
+<p><img src="https://s2.loli.net/2022/06/27/3gwL1yaMJpIjoBS.png" alt="本机IP.png" loading="lazy"></p>
+<h2 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h2><ul>
+<li><p>使用wireshark抓包，打开<a target="_blank" rel="noopener" href="https://www.bilibili.com/%EF%BC%8C%E5%BE%85%E7%95%8C%E9%9D%A2%E5%AE%8C%E5%85%A8%E5%88%B7%E6%96%B0%E5%90%8E%EF%BC%8C%E5%81%9C%E6%AD%A2%E6%8A%93%E5%8C%85%EF%BC%8C%E7%BB%93%E6%9E%9C%E5%A6%82%E5%9B%BE%E3%80%82">https://www.bilibili.com/，待界面完全刷新后，停止抓包，结果如图。</a></p>
+<p>  <img src="https://s2.loli.net/2022/06/27/3n1PeyZcEFbzfsx.png" alt="抓包截图.png" loading="lazy"></p>
+</li>
+<li><p>点击第一条数据包，源地址为2001:250:4402:1119::2218即我的IP地址，目标地址为2408:8752:e00:600::5.</p>
+<p>  展开tls字段，可以看到Content Type、Version、Length、Handshake Type等条目</p>
+<p>  <img src="https://s2.loli.net/2022/06/27/DkywPrJWxpKotBz.png" alt="TLS.png" loading="lazy"></p>
+</li>
+<li><p>点击第二条数据包，源地址为2408:8752:e00:600::5，目标地址为2001:250:4402:1119::2218</p>
+<p>  展开tls字段，可以看到服务器回复了类似的字段</p>
+<p>  <img src="https://s2.loli.net/2022/06/27/hYfBH9O2XNFRTm8.png" alt="TLS2.png" loading="lazy"></p>
+</li>
+</ul>
+<h2 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h2><p>点开info为 Certificate, Server Key Exchange, Server Hello Done 的数据包，可以看到第二阶段发送了证书和服务器公钥</p>
+<p><img src="https://s2.loli.net/2022/06/27/JH9t8p4E7OnaKST.png" alt="第二阶段.png" loading="lazy"></p>
+<h2 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h2><p>点开info为New Session Ticket, Change Cipher Spec, Encrypted Handshake Message的数据包，可以看到客户端进行第三阶段，客户端将证书验证后，生成本地随机密码，并发送给服务器，同时发送了客户端公钥，以及保证数据完整性的信息。</p>
+<p><img src="https://s2.loli.net/2022/06/27/ksejYFmQcIyNLZJ.png" alt="第三阶段0.png" loading="lazy"></p>
+<p>第三阶段结束后开始传输数据包</p>
+<p>可以看到发送了加密的数据包</p>
+<p><img src="https://s2.loli.net/2022/06/27/2B67omNPlTxJReM.png" alt="第三阶段1.png" loading="lazy"><br><img src="https://s2.loli.net/2022/06/27/tDGrNb4HBJMdPOy.png" alt="第三阶段2.png" loading="lazy"></p>
+</div></section><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>绮罗传香</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://sagirichan.com/2022/06/28/SSL-introduce/" title="SSL介绍">http://sagirichan.com/2022/06/28/SSL-introduce/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/06/13/computer-network-note-linkLayer/" rel="next" title="计网复习笔记-链路层"><span class="post-nav-text">计网复习笔记-链路层</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>此博客未支持评论系统，欢迎点击下方按钮，前往本站仓库提出issue</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/Ireinasan/ireinasan.github.io/issues?q=is:issue+SSL介绍">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 绮罗传香</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.9.1</span></div></footer><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div id="local-search-result"></div></div></div></body></html>
